@@ -34,13 +34,11 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(express.json());
 
-const APP_TOKEN = crypto.randomBytes(32).toString('hex');
+const APP_TOKEN = process.env.APP_TOKEN || crypto.randomBytes(32).toString('hex');
 const ALLOWED_ORIGINS = ['http://127.0.0.1:5174', 'http://localhost:5174', 'http://127.0.0.1:4318', 'http://localhost:4318'];
 
 // Token bootstrap: print URL with fragment
 const port = process.env.PORT || 4318;
-console.log(`\nServer running on http://127.0.0.1:${port}`);
-console.log(`Frontend URL: http://127.0.0.1:${port}/#token=${APP_TOKEN}\n`);
 
 // Middleware: token check for non-health routes
 function requireToken(req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -239,6 +237,11 @@ app.get('/api/audio/:id', (req, res) => {
   res.send(buf);
 });
 
-app.listen(port, () => {
-  // already logged
-});
+export { app, APP_TOKEN };
+
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
+    console.log(`\nServer running on http://127.0.0.1:${port}`);
+    console.log(`Frontend URL: http://127.0.0.1:${port}/#token=${APP_TOKEN}\n`);
+  });
+}
