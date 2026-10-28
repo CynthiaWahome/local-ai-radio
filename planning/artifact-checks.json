@@ -1,0 +1,246 @@
+{
+  "roundWindowsMs": [
+    2000,
+    4000,
+    6000,
+    8000,
+    10000
+  ],
+  "authoredQuestions": 15,
+  "voicePreparationEntries": 61,
+  "svgCount": 14,
+  "images": [
+    {
+      "path": "brand/logos/wordmark-stacked-on-light.png",
+      "size": [
+        920,
+        390
+      ]
+    },
+    {
+      "path": "brand/logos/signal-mark-tile.png",
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "brand/logos/signal-mark.png",
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "brand/logos/logo-horizontal-on-dark.png",
+      "size": [
+        1400,
+        252
+      ]
+    },
+    {
+      "path": "brand/logos/signal-mark-monochrome.png",
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "brand/logos/wordmark-stacked-on-dark.png",
+      "size": [
+        920,
+        390
+      ]
+    },
+    {
+      "path": "brand/logos/logo-horizontal-on-light.png",
+      "size": [
+        1400,
+        252
+      ]
+    },
+    {
+      "path": "brand/banners/social-card.png",
+      "size": [
+        2400,
+        1260
+      ]
+    },
+    {
+      "path": "brand/banners/readme-banner.png",
+      "size": [
+        3200,
+        1120
+      ]
+    },
+    {
+      "path": "brand/banners/ui-concept.png",
+      "size": [
+        2880,
+        2000
+      ]
+    },
+    {
+      "path": "brand/banners/devto-cover-vector.png",
+      "size": [
+        2000,
+        840
+      ]
+    },
+    {
+      "path": "brand/banners/brand-palette.png",
+      "size": [
+        3200,
+        1400
+      ]
+    },
+    {
+      "path": "brand/artwork/cinematic-cover.png",
+      "size": [
+        1933,
+        813
+      ]
+    },
+    {
+      "path": "brand/icons/icon-48.png",
+      "size": [
+        48,
+        48
+      ]
+    },
+    {
+      "path": "brand/icons/icon-64.png",
+      "size": [
+        64,
+        64
+      ]
+    },
+    {
+      "path": "brand/icons/apple-touch-icon.png",
+      "size": [
+        180,
+        180
+      ]
+    },
+    {
+      "path": "brand/icons/icon-192.png",
+      "size": [
+        192,
+        192
+      ]
+    },
+    {
+      "path": "brand/icons/icon-1024.png",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "brand/icons/icon-512.png",
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "brand/icons/icon-16.png",
+      "size": [
+        16,
+        16
+      ]
+    },
+    {
+      "path": "brand/icons/icon-32.png",
+      "size": [
+        32,
+        32
+      ]
+    }
+  ],
+  "sounds": [
+    {
+      "path": "audio/sfx/countdown-tick.wav",
+      "seconds": 0.07
+    },
+    {
+      "path": "audio/sfx/signal-drop.wav",
+      "seconds": 0.8
+    },
+    {
+      "path": "audio/sfx/station-bed.wav",
+      "seconds": 12.0
+    },
+    {
+      "path": "audio/sfx/switch-click.wav",
+      "seconds": 0.16
+    },
+    {
+      "path": "audio/sfx/rejection-tone.wav",
+      "seconds": 0.42
+    },
+    {
+      "path": "audio/sfx/distant-knock.wav",
+      "seconds": 0.35
+    },
+    {
+      "path": "audio/sfx/signoff-sting.wav",
+      "seconds": 2.4
+    },
+    {
+      "path": "audio/sfx/tune-sweep.wav",
+      "seconds": 1.2
+    }
+  ],
+  "tokenContrast": [
+    {
+      "foreground": "bone",
+      "background": "void",
+      "ratio": 16.09,
+      "normalTextAA": true
+    },
+    {
+      "foreground": "ash",
+      "background": "void",
+      "ratio": 9.17,
+      "normalTextAA": true
+    },
+    {
+      "foreground": "bone",
+      "background": "console",
+      "ratio": 14.34,
+      "normalTextAA": true
+    },
+    {
+      "foreground": "ash",
+      "background": "console",
+      "ratio": 8.17,
+      "normalTextAA": true
+    },
+    {
+      "foreground": "signal",
+      "background": "void",
+      "ratio": 6.8,
+      "normalTextAA": true
+    },
+    {
+      "foreground": "phosphor",
+      "background": "void",
+      "ratio": 12.47,
+      "normalTextAA": true
+    },
+    {
+      "foreground": "bone",
+      "background": "oxblood",
+      "ratio": 6.98,
+      "normalTextAA": true
+    }
+  ],
+  "limitations": [
+    "No full application built",
+    "No real Ollama inference executed",
+    "Kokoro voice utility dry-run only",
+    "No generated narration delivered",
+    "No browser or offline runtime integration tested"
+  ]
+}

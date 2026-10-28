@@ -1,0 +1,433 @@
+{
+  "status": "preparation_manifest_not_generated_audio",
+  "modelId": "onnx-community/Kokoro-82M-v1.0-ONNX",
+  "clips": [
+    {
+      "id": "intro-01",
+      "speaker": "host",
+      "text": "Good evening. If you can hear this, do not adjust your set. We have already adjusted our expectations.",
+      "voiceId": "bm_george",
+      "file": "intro-01.wav"
+    },
+    {
+      "id": "intro-02",
+      "speaker": "captive",
+      "text": "Hello? Is there actually someone listening?",
+      "voiceId": "af_heart",
+      "file": "intro-02.wav"
+    },
+    {
+      "id": "intro-03",
+      "speaker": "host",
+      "text": "A listener. Excellent. Mara is stranded on the other side of our signal. Five questions will determine whether we bring her back before signoff.",
+      "voiceId": "bm_george",
+      "file": "intro-03.wav"
+    },
+    {
+      "id": "intro-04",
+      "speaker": "captive",
+      "text": "You said that to the last one.",
+      "voiceId": "af_heart",
+      "file": "intro-04.wav"
+    },
+    {
+      "id": "intro-05",
+      "speaker": "host",
+      "text": "And I admired their enthusiasm.",
+      "voiceId": "bm_george",
+      "file": "intro-05.wav"
+    },
+    {
+      "id": "intro-06",
+      "speaker": "host",
+      "text": "This broadcast is interactive. Type your answer and press Enter. Your time begins when I finish each question. You may pause the broadcast using the button on your screen.",
+      "voiceId": "bm_george",
+      "file": "intro-06.wav"
+    },
+    {
+      "id": "intro-07",
+      "speaker": "host",
+      "text": "In standard mode, the first answer window is two seconds. Later windows are four, six, eight, and ten. More time. Fewer excuses.",
+      "voiceId": "bm_george",
+      "file": "intro-07.wav"
+    },
+    {
+      "id": "intro-08",
+      "speaker": "captive",
+      "text": "Please. Just try.",
+      "voiceId": "af_heart",
+      "file": "intro-08.wav"
+    },
+    {
+      "id": "intro-09",
+      "speaker": "host",
+      "text": "We do hate losing people. It complicates the paperwork.",
+      "voiceId": "bm_george",
+      "file": "intro-09.wav"
+    },
+    {
+      "id": "r1-colour",
+      "speaker": "host",
+      "text": "Name a colour.",
+      "voiceId": "bm_george",
+      "file": "r1-colour.wav"
+    },
+    {
+      "id": "r1-number",
+      "speaker": "host",
+      "text": "Give me one number.",
+      "voiceId": "bm_george",
+      "file": "r1-number.wav"
+    },
+    {
+      "id": "r1-word",
+      "speaker": "host",
+      "text": "Give me one word.",
+      "voiceId": "bm_george",
+      "file": "r1-word.wav"
+    },
+    {
+      "id": "r1-fallback",
+      "speaker": "host",
+      "text": "An answer without the appropriate supporting documentation. A brave opening choice.",
+      "voiceId": "bm_george",
+      "file": "r1-fallback.wav"
+    },
+    {
+      "id": "r1-timeout",
+      "speaker": "host",
+      "text": "Silence. A fascinating submission. Unfortunately, the silence department closed at nine.",
+      "voiceId": "bm_george",
+      "file": "r1-timeout.wav"
+    },
+    {
+      "id": "r1-b1",
+      "speaker": "captive",
+      "text": "That was an answer. You heard it.",
+      "voiceId": "af_heart",
+      "file": "r1-b1.wav"
+    },
+    {
+      "id": "r1-b2",
+      "speaker": "host",
+      "text": "I hear many things, Mara. Acceptance is a separate service.",
+      "voiceId": "bm_george",
+      "file": "r1-b2.wav"
+    },
+    {
+      "id": "r1-next",
+      "speaker": "host",
+      "text": "Question two. Four seconds. We have generously doubled your opportunity to disappoint us.",
+      "voiceId": "bm_george",
+      "file": "r1-next.wav"
+    },
+    {
+      "id": "r2-maths",
+      "speaker": "host",
+      "text": "What is two plus two?",
+      "voiceId": "bm_george",
+      "file": "r2-maths.wav"
+    },
+    {
+      "id": "r2-yes",
+      "speaker": "host",
+      "text": "Can you hear me?",
+      "voiceId": "bm_george",
+      "file": "r2-yes.wav"
+    },
+    {
+      "id": "r2-day",
+      "speaker": "host",
+      "text": "Name any day of the week.",
+      "voiceId": "bm_george",
+      "file": "r2-day.wav"
+    },
+    {
+      "id": "r2-fallback",
+      "speaker": "host",
+      "text": "A technically plausible answer submitted under a rule we have just replaced. Unfortunate timing.",
+      "voiceId": "bm_george",
+      "file": "r2-fallback.wav"
+    },
+    {
+      "id": "r2-timeout",
+      "speaker": "host",
+      "text": "Time expired. We accept late answers, naturally. They simply arrive after the person.",
+      "voiceId": "bm_george",
+      "file": "r2-timeout.wav"
+    },
+    {
+      "id": "r2-b1",
+      "speaker": "captive",
+      "text": "You never mentioned that rule.",
+      "voiceId": "af_heart",
+      "file": "r2-b1.wav"
+    },
+    {
+      "id": "r2-b2",
+      "speaker": "host",
+      "text": "Published rules encourage preparation. We prefer character development.",
+      "voiceId": "bm_george",
+      "file": "r2-b2.wav"
+    },
+    {
+      "id": "r2-next",
+      "speaker": "host",
+      "text": "Six seconds for the next one. Almost enough time to question the institution.",
+      "voiceId": "bm_george",
+      "file": "r2-next.wav"
+    },
+    {
+      "id": "r3-reassure",
+      "speaker": "host",
+      "text": "Say something reassuring.",
+      "voiceId": "bm_george",
+      "file": "r3-reassure.wav"
+    },
+    {
+      "id": "r3-light",
+      "speaker": "host",
+      "text": "Name something that gives light.",
+      "voiceId": "bm_george",
+      "file": "r3-light.wav"
+    },
+    {
+      "id": "r3-kind",
+      "speaker": "host",
+      "text": "Say one kind thing to Mara.",
+      "voiceId": "bm_george",
+      "file": "r3-kind.wav"
+    },
+    {
+      "id": "r3-fallback",
+      "speaker": "host",
+      "text": "A moving sentiment. Sadly, our forms have no field for sincerity.",
+      "voiceId": "bm_george",
+      "file": "r3-fallback.wav"
+    },
+    {
+      "id": "r3-timeout",
+      "speaker": "host",
+      "text": "A moment of silence. Very respectful. A little early, but remarkably organized.",
+      "voiceId": "bm_george",
+      "file": "r3-timeout.wav"
+    },
+    {
+      "id": "r3-b1",
+      "speaker": "captive",
+      "text": "Who decides what counts as right?",
+      "voiceId": "af_heart",
+      "file": "r3-b1.wav"
+    },
+    {
+      "id": "r3-b2",
+      "speaker": "host",
+      "text": "An independent panel.",
+      "voiceId": "bm_george",
+      "file": "r3-b2.wav"
+    },
+    {
+      "id": "r3-b3",
+      "speaker": "captive",
+      "text": "Who is on it?",
+      "voiceId": "af_heart",
+      "file": "r3-b3.wav"
+    },
+    {
+      "id": "r3-b4",
+      "speaker": "host",
+      "text": "I respect their privacy.",
+      "voiceId": "bm_george",
+      "file": "r3-b4.wav"
+    },
+    {
+      "id": "r3-next",
+      "speaker": "host",
+      "text": "Eight seconds. The panel is optimistic. I can tell.",
+      "voiceId": "bm_george",
+      "file": "r3-next.wav"
+    },
+    {
+      "id": "r4-exit",
+      "speaker": "host",
+      "text": "Which way should Mara go?",
+      "voiceId": "bm_george",
+      "file": "r4-exit.wav"
+    },
+    {
+      "id": "r4-door",
+      "speaker": "host",
+      "text": "What should we use to open a locked door?",
+      "voiceId": "bm_george",
+      "file": "r4-door.wav"
+    },
+    {
+      "id": "r4-rule",
+      "speaker": "host",
+      "text": "Give me a reason to change the rules.",
+      "voiceId": "bm_george",
+      "file": "r4-rule.wav"
+    },
+    {
+      "id": "r4-fallback",
+      "speaker": "host",
+      "text": "A sensible proposal. Sensible proposals are outside the scope of this broadcast.",
+      "voiceId": "bm_george",
+      "file": "r4-fallback.wav"
+    },
+    {
+      "id": "r4-timeout",
+      "speaker": "host",
+      "text": "No answer. At last, someone has understood our preferred outcome.",
+      "voiceId": "bm_george",
+      "file": "r4-timeout.wav"
+    },
+    {
+      "id": "r4-b1",
+      "speaker": "captive",
+      "text": "There is no right answer, is there?",
+      "voiceId": "af_heart",
+      "file": "r4-b1.wav"
+    },
+    {
+      "id": "r4-b2",
+      "speaker": "host",
+      "text": "There are many right answers. We simply do not broadcast them.",
+      "voiceId": "bm_george",
+      "file": "r4-b2.wav"
+    },
+    {
+      "id": "r4-b3",
+      "speaker": "captive",
+      "text": "Listener. He needs you to keep answering.",
+      "voiceId": "af_heart",
+      "file": "r4-b3.wav"
+    },
+    {
+      "id": "r4-b4",
+      "speaker": "host",
+      "text": "And we appreciate the engagement.",
+      "voiceId": "bm_george",
+      "file": "r4-b4.wav"
+    },
+    {
+      "id": "r4-next",
+      "speaker": "host",
+      "text": "The final question. Ten whole seconds. A lifetime, depending on your side of the door.",
+      "voiceId": "bm_george",
+      "file": "r4-next.wav"
+    },
+    {
+      "id": "r5-final",
+      "speaker": "host",
+      "text": "Tell me why Mara deserves to come back.",
+      "voiceId": "bm_george",
+      "file": "r5-final.wav"
+    },
+    {
+      "id": "r5-name",
+      "speaker": "host",
+      "text": "Say Mara’s name.",
+      "voiceId": "bm_george",
+      "file": "r5-name.wav"
+    },
+    {
+      "id": "r5-demand",
+      "speaker": "host",
+      "text": "Tell me what you want this station to do.",
+      "voiceId": "bm_george",
+      "file": "r5-demand.wav"
+    },
+    {
+      "id": "r5-fallback",
+      "speaker": "host",
+      "text": "The panel has reviewed your final answer and found it dangerously close to a solution. Rejected.",
+      "voiceId": "bm_george",
+      "file": "r5-fallback.wav"
+    },
+    {
+      "id": "r5-timeout",
+      "speaker": "host",
+      "text": "Ten seconds, and still no acceptable answer. The silence will fit beautifully in our closing credits.",
+      "voiceId": "bm_george",
+      "file": "r5-timeout.wav"
+    },
+    {
+      "id": "r5-b1",
+      "speaker": "captive",
+      "text": "You promised.",
+      "voiceId": "af_heart",
+      "file": "r5-b1.wav"
+    },
+    {
+      "id": "r5-b2",
+      "speaker": "host",
+      "text": "I promised five questions. We pride ourselves on delivery.",
+      "voiceId": "bm_george",
+      "file": "r5-b2.wav"
+    },
+    {
+      "id": "end-01",
+      "speaker": "host",
+      "text": "That is our time. Please remain on the line while the line ceases to exist.",
+      "voiceId": "bm_george",
+      "file": "end-01.wav"
+    },
+    {
+      "id": "end-02",
+      "speaker": "captive",
+      "text": "Listener. You answered. He just kept moving the door.",
+      "voiceId": "af_heart",
+      "file": "end-02.wav"
+    },
+    {
+      "id": "end-03",
+      "speaker": "host",
+      "text": "We call that an adaptive entrance policy.",
+      "voiceId": "bm_george",
+      "file": "end-03.wav"
+    },
+    {
+      "id": "end-04",
+      "speaker": "captive",
+      "text": "If anyone asks what happened, tell them I was here.",
+      "voiceId": "af_heart",
+      "file": "end-04.wav"
+    },
+    {
+      "id": "end-05",
+      "speaker": "host",
+      "text": "Mara?",
+      "voiceId": "bm_george",
+      "file": "end-05.wav"
+    },
+    {
+      "id": "end-06",
+      "speaker": "host",
+      "text": "No response. Another listener, another beautifully completed form.",
+      "voiceId": "bm_george",
+      "file": "end-06.wav"
+    },
+    {
+      "id": "end-07",
+      "speaker": "host",
+      "text": "Five questions answered. None acceptable. Please take a moment to reflect on your contribution.",
+      "voiceId": "bm_george",
+      "file": "end-07.wav"
+    },
+    {
+      "id": "end-08",
+      "speaker": "host",
+      "text": "You have been listening to Channel Zero. If the dark calls back, do let it finish speaking.",
+      "voiceId": "bm_george",
+      "file": "end-08.wav"
+    },
+    {
+      "id": "credits-01",
+      "speaker": "host",
+      "text": "Your feedback is important to us. Our capacity to act on it remains theoretical.",
+      "voiceId": "bm_george",
+      "file": "credits-01.wav"
+    }
+  ]
+}

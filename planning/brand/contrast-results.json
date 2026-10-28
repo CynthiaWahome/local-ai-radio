@@ -1,0 +1,47 @@
+{
+  "scope": "token pairs only; not a complete application audit",
+  "pairs": [
+    {
+      "foreground": "bone",
+      "background": "void",
+      "ratio": 16.09,
+      "normalTextAA": true
+    },
+    {
+      "foreground": "ash",
+      "background": "void",
+      "ratio": 9.17,
+      "normalTextAA": true
+    },
+    {
+      "foreground": "bone",
+      "background": "console",
+      "ratio": 14.34,
+      "normalTextAA": true
+    },
+    {
+      "foreground": "ash",
+      "background": "console",
+      "ratio": 8.17,
+      "normalTextAA": true
+    },
+    {
+      "foreground": "signal",
+      "background": "void",
+      "ratio": 6.8,
+      "normalTextAA": true
+    },
+    {
+      "foreground": "phosphor",
+      "background": "void",
+      "ratio": 12.47,
+      "normalTextAA": true
+    },
+    {
+      "foreground": "bone",
+      "background": "oxblood",
+      "ratio": 6.98,
+      "normalTextAA": true
+    }
+  ]
+}

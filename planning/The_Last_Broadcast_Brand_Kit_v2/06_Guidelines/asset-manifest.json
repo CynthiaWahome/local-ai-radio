@@ -1,0 +1,226 @@
+[
+  {
+    "file": "00_START_HERE.md",
+    "bytes": 1279
+  },
+  {
+    "file": "01_Logos/01_window-mark-ink.png",
+    "bytes": 48608,
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGBA"
+  },
+  {
+    "file": "01_Logos/01_window-mark-ink.svg",
+    "bytes": 742
+  },
+  {
+    "file": "01_Logos/01_window-mark-ivory.png",
+    "bytes": 53119,
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGBA"
+  },
+  {
+    "file": "01_Logos/01_window-mark-ivory.svg",
+    "bytes": 742
+  },
+  {
+    "file": "01_Logos/02_horizontal-logo-ink.png",
+    "bytes": 50999,
+    "width": 2400,
+    "height": 480,
+    "mode": "RGBA"
+  },
+  {
+    "file": "01_Logos/02_horizontal-logo-ink.svg",
+    "bytes": 1137
+  },
+  {
+    "file": "01_Logos/02_horizontal-logo-ivory.png",
+    "bytes": 53525,
+    "width": 2400,
+    "height": 480,
+    "mode": "RGBA"
+  },
+  {
+    "file": "01_Logos/02_horizontal-logo-ivory.svg",
+    "bytes": 1137
+  },
+  {
+    "file": "02_Icons/01_favicon.svg",
+    "bytes": 767
+  },
+  {
+    "file": "02_Icons/favicon.ico",
+    "bytes": 5257,
+    "width": 48,
+    "height": 48,
+    "mode": "RGBA"
+  },
+  {
+    "file": "02_Icons/icon-1024.png",
+    "bytes": 58359,
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGBA"
+  },
+  {
+    "file": "02_Icons/icon-16.png",
+    "bytes": 481,
+    "width": 16,
+    "height": 16,
+    "mode": "RGBA"
+  },
+  {
+    "file": "02_Icons/icon-180.png",
+    "bytes": 5301,
+    "width": 180,
+    "height": 180,
+    "mode": "RGBA"
+  },
+  {
+    "file": "02_Icons/icon-192.png",
+    "bytes": 5777,
+    "width": 192,
+    "height": 192,
+    "mode": "RGBA"
+  },
+  {
+    "file": "02_Icons/icon-32.png",
+    "bytes": 923,
+    "width": 32,
+    "height": 32,
+    "mode": "RGBA"
+  },
+  {
+    "file": "02_Icons/icon-48.png",
+    "bytes": 1322,
+    "width": 48,
+    "height": 48,
+    "mode": "RGBA"
+  },
+  {
+    "file": "02_Icons/icon-512.png",
+    "bytes": 21141,
+    "width": 512,
+    "height": 512,
+    "mode": "RGBA"
+  },
+  {
+    "file": "02_Icons/icon-64.png",
+    "bytes": 1782,
+    "width": 64,
+    "height": 64,
+    "mode": "RGBA"
+  },
+  {
+    "file": "03_DEVto_Covers/01_devto-cover-1000x420.jpg",
+    "bytes": 159877,
+    "width": 1000,
+    "height": 420,
+    "mode": "RGB"
+  },
+  {
+    "file": "03_DEVto_Covers/01_devto-cover-1000x420.png",
+    "bytes": 644707,
+    "width": 1000,
+    "height": 420,
+    "mode": "RGB"
+  },
+  {
+    "file": "03_DEVto_Covers/02_devto-cover-2000x840.jpg",
+    "bytes": 494077,
+    "width": 2000,
+    "height": 840,
+    "mode": "RGB"
+  },
+  {
+    "file": "03_DEVto_Covers/02_devto-cover-2000x840.png",
+    "bytes": 2262897,
+    "width": 2000,
+    "height": 840,
+    "mode": "RGB"
+  },
+  {
+    "file": "04_Social_and_README/01_social-card-1200x630.jpg",
+    "bytes": 231605,
+    "width": 1200,
+    "height": 630,
+    "mode": "RGB"
+  },
+  {
+    "file": "04_Social_and_README/01_social-card-1200x630.png",
+    "bytes": 946860,
+    "width": 1200,
+    "height": 630,
+    "mode": "RGB"
+  },
+  {
+    "file": "04_Social_and_README/02_readme-banner-1600x900.jpg",
+    "bytes": 371600,
+    "width": 1600,
+    "height": 900,
+    "mode": "RGB"
+  },
+  {
+    "file": "04_Social_and_README/02_readme-banner-1600x900.png",
+    "bytes": 1603220,
+    "width": 1600,
+    "height": 900,
+    "mode": "RGB"
+  },
+  {
+    "file": "04_Social_and_README/03_square-card-1080x1080.jpg",
+    "bytes": 202486,
+    "width": 1080,
+    "height": 1080,
+    "mode": "RGB"
+  },
+  {
+    "file": "04_Social_and_README/03_square-card-1080x1080.png",
+    "bytes": 781912,
+    "width": 1080,
+    "height": 1080,
+    "mode": "RGB"
+  },
+  {
+    "file": "05_Artwork/01_behind-the-glass-master.png",
+    "bytes": 2276762,
+    "width": 1914,
+    "height": 822,
+    "mode": "RGB"
+  },
+  {
+    "file": "06_Guidelines/AGENT_BRAND_HANDOFF.md",
+    "bytes": 1042
+  },
+  {
+    "file": "06_Guidelines/palette.json",
+    "bytes": 111
+  },
+  {
+    "file": "06_Guidelines/tokens.css",
+    "bytes": 129
+  },
+  {
+    "file": "07_Fonts/DejaVuSans-Bold.ttf",
+    "bytes": 708920
+  },
+  {
+    "file": "07_Fonts/DejaVuSans.ttf",
+    "bytes": 759720
+  },
+  {
+    "file": "07_Fonts/DejaVuSansMono.ttf",
+    "bytes": 343140
+  },
+  {
+    "file": "07_Fonts/DejaVuSerif-Bold.ttf",
+    "bytes": 356668
+  },
+  {
+    "file": "07_Fonts/FONT_LICENSE.txt",
+    "bytes": 3859
+  }
+]

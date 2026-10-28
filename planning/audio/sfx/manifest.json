@@ -1,0 +1,62 @@
+{
+  "origin": "original procedural synthesis for this project",
+  "format": "16-bit PCM mono WAV",
+  "assets": [
+    {
+      "file": "station-bed.wav",
+      "seconds": 12.0,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakLinear": 0.0246
+    },
+    {
+      "file": "switch-click.wav",
+      "seconds": 0.16,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakLinear": 0.0738
+    },
+    {
+      "file": "countdown-tick.wav",
+      "seconds": 0.07,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakLinear": 0.0369
+    },
+    {
+      "file": "rejection-tone.wav",
+      "seconds": 0.42,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakLinear": 0.073
+    },
+    {
+      "file": "tune-sweep.wav",
+      "seconds": 1.2,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakLinear": 0.0688
+    },
+    {
+      "file": "signal-drop.wav",
+      "seconds": 0.8,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakLinear": 0.0566
+    },
+    {
+      "file": "distant-knock.wav",
+      "seconds": 0.35,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakLinear": 0.0705
+    },
+    {
+      "file": "signoff-sting.wav",
+      "seconds": 2.4,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakLinear": 0.0624
+    }
+  ]
+}
