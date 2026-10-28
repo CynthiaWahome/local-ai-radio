@@ -171,12 +171,72 @@ app.post('/api/reaction', async (req, res) => {
 });
 
 
-app.post('/api/speech', (_req, res) => {
-  res.status(501).json({ error: 'not_implemented' });
+const audioStore = new Map<string, Buffer>();
+
+function makeSilentWav(): Buffer {
+  const sampleRate = 8000;
+  const numChannels = 1;
+  const bitsPerSample = 8;
+  const dataSize = sampleRate; // 1 second
+  const buffer = Buffer.alloc(44 + dataSize);
+  // RIFF header
+  buffer.write('RIFF', 0);
+  buffer.writeUInt32LE(36 + dataSize, 4);
+  buffer.write('WAVE', 8);
+  buffer.write('fmt ', 12);
+  buffer.writeUInt32LE(16, 16);
+  buffer.writeUInt16LE(1, 20); // PCM
+  buffer.writeUInt16LE(numChannels, 22);
+  buffer.writeUInt32LE(sampleRate, 24);
+  buffer.writeUInt32LE(sampleRate * numChannels * (bitsPerSample / 8), 28);
+  buffer.writeUInt16LE(numChannels * (bitsPerSample / 8), 32);
+  buffer.writeUInt16LE(bitsPerSample, 34);
+  buffer.write('data', 36);
+  buffer.writeUInt32LE(dataSize, 40);
+  // silence (128 for 8-bit unsigned)
+  for (let i = 44; i < buffer.length; i++) buffer[i] = 128;
+  return buffer;
+}
+
+/**
+ * @openapi
+ * /api/speech:
+ *   post:
+ *     summary: Synthesize speech
+ *     security:
+ *       - appToken: []
+ *     responses:
+ *       200:
+ *         description: Audio ID
+ */
+app.post('/api/speech', (req, res) => {
+  const id = `audio-${Date.now()}`;
+  audioStore.set(id, makeSilentWav());
+  res.json({ audioId: id, status: 'ready' });
 });
 
-app.get('/api/audio/:id', (_req, res) => {
-  res.status(501).json({ error: 'not_implemented' });
+/**
+ * @openapi
+ * /api/audio/{id}:
+ *   get:
+ *     summary: Serve audio by ID
+ *     security:
+ *       - appToken: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: WAV audio
+ */
+app.get('/api/audio/:id', (req, res) => {
+  const buf = audioStore.get(req.params.id);
+  if (!buf) return res.status(404).json({ error: 'not_found' });
+  res.set('Content-Type', 'audio/wav');
+  res.send(buf);
 });
 
 app.listen(port, () => {
