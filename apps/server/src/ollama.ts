@@ -28,9 +28,12 @@ export async function generateReaction(system: string, user: object): Promise<{ 
     if (!res.ok) throw new Error(`http_${res.status}`);
     const raw = await res.json();
     const parsed = HostOutput.parse(JSON.parse(raw.message.content));
-    const words = parsed.hostLine.trim().split(/\s+/u).length;
+    const line = parsed.hostLine;
+    const words = line.trim().split(/\s+/u).length;
     if (words > 18) throw new Error('too_many_words');
-    return { hostLine: parsed.hostLine, source: 'model', ms: Date.now() - start };
+    if (/[<>\n\r\t]/.test(line)) throw new Error('markup_or_control');
+    if (/\*\*/.test(line)) throw new Error('markup');
+    return { hostLine: line, source: 'model', ms: Date.now() - start };
   } catch (e: any) {
     clearTimeout(timeout);
     const reason = e.name === 'AbortError' ? 'timeout' : 'invalid';

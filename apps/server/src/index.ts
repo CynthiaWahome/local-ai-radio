@@ -133,7 +133,7 @@ app.post('/api/reaction', async (req, res) => {
 
   let episode: any;
   try {
-    episode = JSON.parse(readFileSync(new URL('../../content/episode-01.json', import.meta.url), 'utf8'));
+    episode = JSON.parse(readFileSync(new URL('../../../content/episode-01.json', import.meta.url), 'utf8'));
   } catch {
     return res.status(500).json({ error: 'episode_not_found' });
   }
@@ -144,7 +144,7 @@ app.post('/api/reaction', async (req, res) => {
     return res.status(400).json({ error: 'invalid_question' });
   }
 
-  const system = readFileSync(new URL('../../prompts/presenter-system.txt', import.meta.url), 'utf8');
+  const system = readFileSync(new URL('../../../prompts/presenter-system.txt', import.meta.url), 'utf8');
   const result = await generateReaction(system, {
     question: question.prompt,
     objection: question.objection,
