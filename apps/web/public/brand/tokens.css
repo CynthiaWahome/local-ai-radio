@@ -1,0 +1,22 @@
+/* The Last Broadcast — proposed application tokens. Adjust font URLs after copying. */
+@font-face{font-family:"Broadcast Display";src:url("./fonts/DejaVuSans-Bold.ttf") format("truetype");font-weight:700;font-display:swap}
+@font-face{font-family:"Broadcast UI";src:url("./fonts/DejaVuSans.ttf") format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:"Broadcast Mono";src:url("./fonts/DejaVuSansMono.ttf") format("truetype");font-weight:400;font-display:swap}
+:root{
+  --void:#0B0C0F;
+  --console:#171A20;
+  --dial:#262B32;
+  --bone:#F2E8D5;
+  --ash:#B6B1A8;
+  --signal:#FF665A;
+  --oxblood:#8E2633;
+  --phosphor:#B8D7B0;
+  --font-display:"Broadcast Display",sans-serif;
+  --font-body:"Broadcast UI",system-ui,sans-serif;
+  --font-mono:"Broadcast Mono",monospace;
+  --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-6:24px;--space-8:32px;--space-12:48px;
+  --radius-sm:6px;--radius-panel:24px;
+}
+:focus-visible{outline:3px solid var(--signal);outline-offset:4px}
+.broadcast-timer{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+@media(prefers-reduced-motion:reduce){.signal-noise,.signal-jitter{animation:none!important;transform:none!important}}
