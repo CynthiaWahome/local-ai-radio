@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "react": "^18.3.0",
-    "react-dom": "^18.3.0"
+    "react-dom": "^18.3.0",
+    "@local-ai-radio/engine": "*",
+    "@local-ai-radio/contracts": "*"
   },
   "devDependencies": {
     "@types/react": "^18.3.0",
