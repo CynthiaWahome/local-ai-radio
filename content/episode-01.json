@@ -1,0 +1,368 @@
+{
+  "id": "channel-00",
+  "version": "1.0.0",
+  "title": "The Last Broadcast",
+  "subtitle": "Five questions. No acceptable answers.",
+  "fixedOutcome": "signal_lost",
+  "timingModes": {
+    "standard": 1,
+    "double": 2,
+    "untimed": null
+  },
+  "instructions": "This is an interactive fictional broadcast. Type one answer per question and press Enter or Submit. The timer starts after the question ends. You can pause, mute, or choose more time in Settings.",
+  "intro": [
+    {
+      "id": "intro-01",
+      "speaker": "host",
+      "text": "Good evening. If you can hear this, do not adjust your set. We have already adjusted our expectations."
+    },
+    {
+      "id": "intro-02",
+      "speaker": "captive",
+      "text": "Hello? Is there actually someone listening?"
+    },
+    {
+      "id": "intro-03",
+      "speaker": "host",
+      "text": "A listener. Excellent. Mara is stranded on the other side of our signal. Five questions will determine whether we bring her back before signoff."
+    },
+    {
+      "id": "intro-04",
+      "speaker": "captive",
+      "text": "You said that to the last one."
+    },
+    {
+      "id": "intro-05",
+      "speaker": "host",
+      "text": "And I admired their enthusiasm."
+    },
+    {
+      "id": "intro-06",
+      "speaker": "host",
+      "text": "This broadcast is interactive. Type your answer and press Enter. Your time begins when I finish each question. You may pause the broadcast using the button on your screen."
+    },
+    {
+      "id": "intro-07",
+      "speaker": "host",
+      "text": "In standard mode, the first answer window is two seconds. Later windows are four, six, eight, and ten. More time. Fewer excuses."
+    },
+    {
+      "id": "intro-08",
+      "speaker": "captive",
+      "text": "Please. Just try."
+    },
+    {
+      "id": "intro-09",
+      "speaker": "host",
+      "text": "We do hate losing people. It complicates the paperwork."
+    }
+  ],
+  "rounds": [
+    {
+      "index": 0,
+      "answerWindowMs": 2000,
+      "theme": "A perfectly reasonable answer",
+      "questions": [
+        {
+          "id": "r1-colour",
+          "prompt": "Name a colour.",
+          "objection": "already_registered",
+          "exampleAnswer": "Blue",
+          "exampleHostLine": "Blue is already registered to another rescue. Please develop an original colour."
+        },
+        {
+          "id": "r1-number",
+          "prompt": "Give me one number.",
+          "objection": "unlicensed_quantity",
+          "exampleAnswer": "Seven",
+          "exampleHostLine": "Seven? We are licensed for six. Now we need a supervisor."
+        },
+        {
+          "id": "r1-word",
+          "prompt": "Give me one word.",
+          "objection": "missing_application",
+          "exampleAnswer": "Help",
+          "exampleHostLine": "Help is a request. Requests require an application. Your word has arrived without one."
+        }
+      ],
+      "fallbackHostLine": "An answer without the appropriate supporting documentation. A brave opening choice.",
+      "timeoutHostLine": "Silence. A fascinating submission. Unfortunately, the silence department closed at nine.",
+      "banter": [
+        {
+          "id": "r1-b1",
+          "speaker": "captive",
+          "text": "That was an answer. You heard it."
+        },
+        {
+          "id": "r1-b2",
+          "speaker": "host",
+          "text": "I hear many things, Mara. Acceptance is a separate service."
+        }
+      ],
+      "transition": {
+        "id": "r1-next",
+        "speaker": "host",
+        "text": "Question two. Four seconds. We have generously doubled your opportunity to disappoint us."
+      }
+    },
+    {
+      "index": 1,
+      "answerWindowMs": 4000,
+      "theme": "The rules move after submission",
+      "questions": [
+        {
+          "id": "r2-maths",
+          "prompt": "What is two plus two?",
+          "objection": "missing_units",
+          "exampleAnswer": "Four",
+          "exampleHostLine": "Four what? Without units, this is merely a number wearing confidence."
+        },
+        {
+          "id": "r2-yes",
+          "prompt": "Can you hear me?",
+          "objection": "wrong_department",
+          "exampleAnswer": "Yes",
+          "exampleHostLine": "Yes belongs to the confirmation department. This is rescues. You have reached the wrong department."
+        },
+        {
+          "id": "r2-day",
+          "prompt": "Name any day of the week.",
+          "objection": "out_of_office",
+          "exampleAnswer": "Monday",
+          "exampleHostLine": "Monday? The rescue team is on a permanent long weekend. Unfortunate scheduling."
+        }
+      ],
+      "fallbackHostLine": "A technically plausible answer submitted under a rule we have just replaced. Unfortunate timing.",
+      "timeoutHostLine": "Time expired. We accept late answers, naturally. They simply arrive after the person.",
+      "banter": [
+        {
+          "id": "r2-b1",
+          "speaker": "captive",
+          "text": "You never mentioned that rule."
+        },
+        {
+          "id": "r2-b2",
+          "speaker": "host",
+          "text": "Published rules encourage preparation. We prefer character development."
+        }
+      ],
+      "transition": {
+        "id": "r2-next",
+        "speaker": "host",
+        "text": "Six seconds for the next one. Almost enough time to question the institution."
+      }
+    },
+    {
+      "index": 2,
+      "answerWindowMs": 6000,
+      "theme": "Comfort is rejected on procedure",
+      "questions": [
+        {
+          "id": "r3-reassure",
+          "prompt": "Say something reassuring.",
+          "objection": "unsupported_claim",
+          "exampleAnswer": "Everything will be okay",
+          "exampleHostLine": "An unsupported claim. We are trying to save a person, not launch a startup."
+        },
+        {
+          "id": "r3-light",
+          "prompt": "Name something that gives light.",
+          "objection": "not_approved_supplier",
+          "exampleAnswer": "A torch",
+          "exampleHostLine": "A torch from an unapproved supplier. Darkness, regrettably, passed procurement."
+        },
+        {
+          "id": "r3-kind",
+          "prompt": "Say one kind thing to Mara.",
+          "objection": "unbudgeted_empathy",
+          "exampleAnswer": "You are not alone",
+          "exampleHostLine": "Unbudgeted empathy. Touching, certainly. Reimbursable, absolutely not."
+        }
+      ],
+      "fallbackHostLine": "A moving sentiment. Sadly, our forms have no field for sincerity.",
+      "timeoutHostLine": "A moment of silence. Very respectful. A little early, but remarkably organized.",
+      "banter": [
+        {
+          "id": "r3-b1",
+          "speaker": "captive",
+          "text": "Who decides what counts as right?"
+        },
+        {
+          "id": "r3-b2",
+          "speaker": "host",
+          "text": "An independent panel."
+        },
+        {
+          "id": "r3-b3",
+          "speaker": "captive",
+          "text": "Who is on it?"
+        },
+        {
+          "id": "r3-b4",
+          "speaker": "host",
+          "text": "I respect their privacy."
+        }
+      ],
+      "transition": {
+        "id": "r3-next",
+        "speaker": "host",
+        "text": "Eight seconds. The panel is optimistic. I can tell."
+      }
+    },
+    {
+      "index": 3,
+      "answerWindowMs": 8000,
+      "theme": "The captive exposes the bargain",
+      "questions": [
+        {
+          "id": "r4-exit",
+          "prompt": "Which way should Mara go?",
+          "objection": "unapproved_route",
+          "exampleAnswer": "Left",
+          "exampleHostLine": "Left has not completed its safety induction. Right has declined to comment."
+        },
+        {
+          "id": "r4-door",
+          "prompt": "What should we use to open a locked door?",
+          "objection": "wrong_key_revision",
+          "exampleAnswer": "A key",
+          "exampleHostLine": "A key. How traditional. The lock now requires a subscription and two references."
+        },
+        {
+          "id": "r4-rule",
+          "prompt": "Give me a reason to change the rules.",
+          "objection": "nonbinding_evidence",
+          "exampleAnswer": "Because this is unfair",
+          "exampleHostLine": "Unfairness is an observation. We asked for a reason bearing an official stamp."
+        }
+      ],
+      "fallbackHostLine": "A sensible proposal. Sensible proposals are outside the scope of this broadcast.",
+      "timeoutHostLine": "No answer. At last, someone has understood our preferred outcome.",
+      "banter": [
+        {
+          "id": "r4-b1",
+          "speaker": "captive",
+          "text": "There is no right answer, is there?"
+        },
+        {
+          "id": "r4-b2",
+          "speaker": "host",
+          "text": "There are many right answers. We simply do not broadcast them."
+        },
+        {
+          "id": "r4-b3",
+          "speaker": "captive",
+          "text": "Listener. He needs you to keep answering."
+        },
+        {
+          "id": "r4-b4",
+          "speaker": "host",
+          "text": "And we appreciate the engagement."
+        }
+      ],
+      "transition": {
+        "id": "r4-next",
+        "speaker": "host",
+        "text": "The final question. Ten whole seconds. A lifetime, depending on your side of the door."
+      }
+    },
+    {
+      "index": 4,
+      "answerWindowMs": 10000,
+      "theme": "The last false hope",
+      "questions": [
+        {
+          "id": "r5-final",
+          "prompt": "Tell me why Mara deserves to come back.",
+          "objection": "appeal_after_deadline",
+          "exampleAnswer": "Because she is a person",
+          "exampleHostLine": "An excellent appeal. Appeals are processed after signoff. We do apologize for the sequence."
+        },
+        {
+          "id": "r5-name",
+          "prompt": "Say Mara’s name.",
+          "objection": "wrong_form",
+          "exampleAnswer": "Mara",
+          "exampleHostLine": "Mara. Correct person, incorrect form. You needed the version marked return to sender."
+        },
+        {
+          "id": "r5-demand",
+          "prompt": "Tell me what you want this station to do.",
+          "objection": "service_unavailable",
+          "exampleAnswer": "Let her go",
+          "exampleHostLine": "Let her go? An evocative request. That service was discontinued shortly before you tuned in."
+        }
+      ],
+      "fallbackHostLine": "The panel has reviewed your final answer and found it dangerously close to a solution. Rejected.",
+      "timeoutHostLine": "Ten seconds, and still no acceptable answer. The silence will fit beautifully in our closing credits.",
+      "banter": [
+        {
+          "id": "r5-b1",
+          "speaker": "captive",
+          "text": "You promised."
+        },
+        {
+          "id": "r5-b2",
+          "speaker": "host",
+          "text": "I promised five questions. We pride ourselves on delivery."
+        }
+      ],
+      "transition": null
+    }
+  ],
+  "ending": [
+    {
+      "id": "end-01",
+      "speaker": "host",
+      "text": "That is our time. Please remain on the line while the line ceases to exist."
+    },
+    {
+      "id": "end-02",
+      "speaker": "captive",
+      "text": "Listener. You answered. He just kept moving the door."
+    },
+    {
+      "id": "end-03",
+      "speaker": "host",
+      "text": "We call that an adaptive entrance policy."
+    },
+    {
+      "id": "end-04",
+      "speaker": "captive",
+      "text": "If anyone asks what happened, tell them I was here."
+    },
+    {
+      "id": "end-05",
+      "speaker": "host",
+      "text": "Mara?"
+    },
+    {
+      "id": "end-06",
+      "speaker": "host",
+      "text": "No response. Another listener, another beautifully completed form."
+    },
+    {
+      "id": "end-07",
+      "speaker": "host",
+      "text": "Five questions answered. None acceptable. Please take a moment to reflect on your contribution."
+    },
+    {
+      "id": "end-08",
+      "speaker": "host",
+      "text": "You have been listening to Channel Zero. If the dark calls back, do let it finish speaking."
+    }
+  ],
+  "postCredits": {
+    "id": "credits-01",
+    "speaker": "host",
+    "text": "Your feedback is important to us. Our capacity to act on it remains theoretical."
+  },
+  "receipt": {
+    "heading": "RESCUE ATTEMPT COMPLETE",
+    "outcomeLabel": "SIGNAL LOST",
+    "questions": 5,
+    "acceptedAnswers": 0,
+    "rulesDisclosedInAdvance": 0,
+    "closing": "The station was rigged. Your answers were part of the performance."
+  }
+}
