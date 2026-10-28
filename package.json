@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev": "concurrently \"npm run dev -w apps/web\" \"npm run dev -w apps/server\"",
     "build": "npm run build -w packages/contracts && npm run build -w packages/engine && npm run build -w apps/server && npm run build -w apps/web",
@@ -15,5 +18,8 @@
     "probe:model": "node planning/reference/ollama-probe.mjs",
     "prepare:voices": "echo \"voice prep not configured yet\"",
     "doctor": "echo \"doctor not configured yet\""
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.6"
   }
 }
