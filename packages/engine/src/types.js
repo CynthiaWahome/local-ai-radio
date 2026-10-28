@@ -1,0 +1,1 @@
+export const WINDOWS = Object.freeze([2000, 4000, 6000, 8000, 10000]);

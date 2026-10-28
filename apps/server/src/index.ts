@@ -198,12 +198,40 @@ function makeSilentWav(): Buffer {
   return buffer;
 }
 
+/**
+ * @openapi
+ * /api/speech:
+ *   post:
+ *     summary: Synthesize speech
+ *     security:
+ *       - appToken: []
+ *     responses:
+ *       200:
+ *         description: Audio ID
+ */
 app.post('/api/speech', (req, res) => {
   const id = `audio-${Date.now()}`;
   audioStore.set(id, makeSilentWav());
   res.json({ audioId: id, status: 'ready' });
 });
 
+/**
+ * @openapi
+ * /api/audio/{id}:
+ *   get:
+ *     summary: Serve audio by ID
+ *     security:
+ *       - appToken: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: WAV audio
+ */
 app.get('/api/audio/:id', (req, res) => {
   const buf = audioStore.get(req.params.id);
   if (!buf) return res.status(404).json({ error: 'not_found' });
