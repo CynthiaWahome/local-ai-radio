@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+.env.*
+model-weights/
+audio-cache/
+run-logs/
+PROGRESS.md
+planning/PROGRESS.md
