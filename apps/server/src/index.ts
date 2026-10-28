@@ -3,6 +3,7 @@ import helmet from 'helmet';
 import crypto from 'node:crypto';
 import { ReactionRequest, ReactionResponseType as ReactionResponse, RuntimeResponseType as RuntimeResponse, WarmupResponseType as WarmupResponse } from '@local-ai-radio/contracts';
 import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import { generateReaction } from './ollama';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
@@ -235,6 +236,14 @@ app.get('/api/audio/:id', (req, res) => {
   if (!buf) return res.status(404).json({ error: 'not_found' });
   res.set('Content-Type', 'audio/wav');
   res.send(buf);
+});
+
+
+// Serve built web UI in production
+const webDist = path.resolve(process.cwd(), 'apps/web/dist');
+app.use(express.static(webDist));
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(webDist, 'index.html'));
 });
 
 export { app, APP_TOKEN };
