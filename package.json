@@ -1,0 +1,28 @@
+{
+  "name": "local-ai-radio",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w apps/web\" \"npm run dev -w apps/server\"",
+    "build": "npm run build -w packages/contracts && npm run build -w packages/engine && npm run build -w apps/server && npm run build -w apps/web",
+    "start": "node apps/server/dist/index.js",
+    "typecheck": "npm run typecheck -w packages/contracts && npm run typecheck -w packages/engine && npm run typecheck -w apps/server && npm run typecheck -w apps/web",
+    "lint": "echo \"lint not configured yet\"",
+    "test": "npm run test -w packages/engine && npm run test -w apps/server",
+    "test:e2e": "playwright test",
+    "probe:model": "node planning/reference/ollama-probe.mjs",
+    "prepare:voices": "echo \"voice prep not configured yet\"",
+    "doctor": "echo \"doctor not configured yet\""
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  },
+  "dependencies": {
+    "debug": "^4.4.3"
+  }
+}
