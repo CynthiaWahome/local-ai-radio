@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { newRun, introDone, questionPresented, submit, receiveReaction, reactionDone, banterDone, endingDone, secondsLeft, type RunState } from '@local-ai-radio/engine';
 
 const qids = ['r1-colour', 'r2-math', 'r3-reassure', 'r4-direction', 'r5-appeal'];
@@ -7,7 +7,18 @@ type Screen = 'title' | 'soundcheck' | 'game' | 'receipt';
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>('title');
+  const [token, setToken] = useState<string | null>(null);
   const [run, setRun] = useState<RunState | null>(null);
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    const match = hash.match(/token=([a-f0-9]+)/);
+    if (match) {
+      setToken(match[1]);
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  }, []);
+
   const [answer, setAnswer] = useState('');
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
 
@@ -30,15 +41,46 @@ export default function App() {
     requestAnimationFrame(tick);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!run) return;
     const r = submit(run, answer, Date.now());
     setRun(r);
-    // fixture reaction
-    setTimeout(() => {
+    if (!token) {
+      // fallback if no token
+      setTimeout(() => {
+        if (!r) return;
+        const r2 = receiveReaction(r, { hostLine: 'An interesting submission. Unfortunately, that is not acceptable.', dialogueSource: 'fixture' }, `${r.id}:${r.round}`);
+        setRun(reactionDone(r2));
+        setTimeout(() => {
+          if (!r2) return;
+          const r3 = banterDone(r2);
+          setRun(r3);
+          if (r3.phase === 'QUESTION') presentQuestion();
+          if (r3.phase === 'ENDING') {
+            setTimeout(() => setRun(endingDone(r3)), 1000);
+          }
+        }, 1000);
+      }, 500);
+      return;
+    }
+    try {
+      const res = await fetch('/api/reaction', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-App-Token': token, 'Origin': window.location.origin },
+        body: JSON.stringify({
+          runId: r.id,
+          turnId: `${r.id}:${r.round}`,
+          episodeId: 'channel-00',
+          roundIndex: r.round,
+          questionId: r.questionIds[r.round],
+          answerKind: r.turns[r.turns.length - 1]?.answerKind || 'text',
+          answerText: answer,
+        }),
+      });
+      const data = await res.json();
       if (!r) return;
-      const r2 = receiveReaction(r, { hostLine: 'An interesting submission. Unfortunately, that is not acceptable.', dialogueSource: 'fixture' }, `${r.id}:${r.round}`);
+      const r2 = receiveReaction(r, { hostLine: data.hostLine, dialogueSource: data.dialogueSource }, `${r.id}:${r.round}`);
       setRun(reactionDone(r2));
       setTimeout(() => {
         if (!r2) return;
@@ -49,7 +91,11 @@ export default function App() {
           setTimeout(() => setRun(endingDone(r3)), 1000);
         }
       }, 1000);
-    }, 500);
+    } catch {
+      if (!r) return;
+      const r2 = receiveReaction(r, { hostLine: 'An interesting submission. Unfortunately, that is not acceptable.', dialogueSource: 'fallback' }, `${r.id}:${r.round}`);
+      setRun(reactionDone(r2));
+    }
   };
 
   if (screen === 'title') {
