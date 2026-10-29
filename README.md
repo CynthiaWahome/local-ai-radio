@@ -6,7 +6,8 @@
 
 <p align="center">
   <strong>An interactive radio nightmare.</strong><br/>
-  Five questions. No acceptable answers.
+  Five questions. No acceptable answers.<br/>
+  <em>Bring headphones. And a sense of humor. And maybe a therapist.</em>
 </p>
 
 <p align="center">
@@ -28,7 +29,9 @@
 
 A single-player, local-first, five-round interactive radio nightmare. The listener tunes into Channel 00. A presenter claims five answers can rescue Mara, a person trapped beyond the signal. Each answer is rejected for an invented bureaucratic reason. The listener gradually hears that this has happened before. The broadcast ends; Mara is lost into the fictional dark.
 
-The experience is intentionally unwinnable. Its pleasure comes from the model reacting to the player's ingenuity, the captive challenging the host, and the listener discovering the rigged format.
+The experience is intentionally unwinnable. Its pleasure comes from the model reacting to the player's ingenuity, the captive challenging the host, and the listener discovering the rigged format. Think of it as a customer service nightmare where the customer is a hostage and the representative is an AI with a god complex and a thesaurus.
+
+The point: a local open-weight model (Gemma 3 1B via Ollama) performs the answer-conditioned improvisation entirely on the player's machine. No cloud inference, no paid voice API, no data leaves the device. The game can be inspected, its story and voices replaced, and its runtime kept private. Network inspection after setup shows zero external runtime requests. Your secrets are safe. The station's aren't.
 
 ## Tech Stack
 
