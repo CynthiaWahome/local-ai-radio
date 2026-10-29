@@ -43,6 +43,7 @@ const port = process.env.PORT || 4318;
 
 // Middleware: token check for non-health routes
 function requireToken(req: express.Request, res: express.Response, next: express.NextFunction) {
+  if (!req.path.startsWith('/api/')) return next();
   if (req.path === '/api/health') return next();
   const token = req.headers['x-app-token'];
   if (token !== APP_TOKEN) {
@@ -56,10 +57,6 @@ function requireToken(req: express.Request, res: express.Response, next: express
 }
 
 app.use(requireToken);
-
-app.get('/', (_req, res) => {
-  res.send('local-ai-radio API. Use /api/health for status.');
-});
 
 /**
  * @openapi
