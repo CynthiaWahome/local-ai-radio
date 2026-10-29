@@ -124,4 +124,4 @@ Endpoints:
 
 ## License
 
-MIT
+[MIT](LICENSE)
