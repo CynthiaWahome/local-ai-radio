@@ -20,6 +20,7 @@
     "doctor": "echo \"doctor not configured yet\""
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "concurrently": "^10.0.6"
   },
   "dependencies": {
