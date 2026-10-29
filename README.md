@@ -9,7 +9,7 @@
   Five questions. No acceptable answers.
 </p>
 
-<p align="center">
+<p>
   <img src="https://img.shields.io/badge/Node-24_LTS-339933?logo=node.js&logoColor=white" alt="Node" />
   <img src="https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white" alt="React" />
   <img src="https://img.shields.io/badge/TypeScript-5.6-3178C6?logo=typescript&logoColor=white" alt="TypeScript" />
@@ -29,6 +29,8 @@
 A single-player, local-first, five-round interactive radio nightmare. The listener tunes into Channel 00. A presenter claims five answers can rescue Mara, a person trapped beyond the signal. Each answer is rejected for an invented bureaucratic reason. The listener gradually hears that this has happened before. The broadcast ends; Mara is lost into the fictional dark.
 
 The experience is intentionally unwinnable. Its pleasure comes from the model reacting to the player's ingenuity, the captive challenging the host, and the listener discovering the rigged format.
+
+The point: a local open-weight model (Gemma 3 1B via Ollama) performs the answer-conditioned improvisation entirely on the player's machine. No cloud inference, no paid voice API, no data leaves the device. The game can be inspected, its story and voices replaced, and its runtime kept private. Network inspection after setup shows zero external runtime requests.
 
 ## Tech Stack
 
