@@ -3,6 +3,7 @@ import helmet from 'helmet';
 import crypto from 'node:crypto';
 import { ReactionRequest, ReactionResponseType as ReactionResponse, RuntimeResponseType as RuntimeResponse, WarmupResponseType as WarmupResponse } from '@local-ai-radio/contracts';
 import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import { generateReaction } from './ollama';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
@@ -43,16 +44,15 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(express.json());
 
-const APP_TOKEN = crypto.randomBytes(32).toString('hex');
+const APP_TOKEN = process.env.APP_TOKEN || crypto.randomBytes(32).toString('hex');
 const ALLOWED_ORIGINS = ['http://127.0.0.1:5174', 'http://localhost:5174', 'http://127.0.0.1:4318', 'http://localhost:4318'];
 
 // Token bootstrap: print URL with fragment
 const port = process.env.PORT || 4318;
-console.log(`\nServer running on http://127.0.0.1:${port}`);
-console.log(`Frontend URL: http://127.0.0.1:${port}/#token=${APP_TOKEN}\n`);
 
 // Middleware: token check for non-health routes
 function requireToken(req: express.Request, res: express.Response, next: express.NextFunction) {
+  if (!req.path.startsWith('/api/')) return next();
   if (req.path === '/api/health') return next();
   const token = req.headers['x-app-token'];
   if (token !== APP_TOKEN) {
@@ -66,10 +66,6 @@ function requireToken(req: express.Request, res: express.Response, next: express
 }
 
 app.use(requireToken);
-
-app.get('/', (_req, res) => {
-  res.send('local-ai-radio API. Use /api/health for status.');
-});
 
 /**
  * @openapi
@@ -250,10 +246,23 @@ app.get('/api/audio/:id', (req, res) => {
 });
 
 
+// Serve built web UI in production
+const webDist = path.resolve(process.cwd(), 'apps/web/dist');
+app.use(express.static(webDist));
+
 app.get('/api/debug/logs', (_req, res) => {
   res.json({ logs: serverLogs });
 });
 
-app.listen(port, () => {
-  // already logged
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(webDist, 'index.html'));
 });
+
+export { app, APP_TOKEN };
+
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
+    console.log(`\nServer running on http://127.0.0.1:${port}`);
+    console.log(`Frontend URL: http://127.0.0.1:${port}/#token=${APP_TOKEN}\n`);
+  });
+}
