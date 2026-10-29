@@ -9,6 +9,15 @@ import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
 const app = express();
+
+const serverLogs: string[] = [];
+function log(msg: string) {
+  const line = `${new Date().toISOString()} ${msg}`;
+  serverLogs.push(line);
+  if (serverLogs.length > 200) serverLogs.shift();
+  console.log(line);
+}
+
 app.use(helmet());
 
 const swaggerOptions = {
@@ -121,6 +130,7 @@ app.post('/api/warmup', (_req, res) => {
  *         description: Reaction result
  */
 app.post('/api/reaction', async (req, res) => {
+  log('reaction request received');
   const parsed = ReactionRequest.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ error: 'invalid_request', details: parsed.error.flatten() });
@@ -239,6 +249,11 @@ app.get('/api/audio/:id', (req, res) => {
 // Serve built web UI in production
 const webDist = path.resolve(process.cwd(), 'apps/web/dist');
 app.use(express.static(webDist));
+
+app.get('/api/debug/logs', (_req, res) => {
+  res.json({ logs: serverLogs });
+});
+
 app.get('*', (_req, res) => {
   res.sendFile(path.join(webDist, 'index.html'));
 });
