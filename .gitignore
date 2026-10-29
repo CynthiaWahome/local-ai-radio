@@ -8,3 +8,4 @@ run-logs/
 PROGRESS.md
 planning/PROGRESS.md
 src/**/*.js
+test-results/
