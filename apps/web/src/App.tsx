@@ -481,7 +481,7 @@ export default function App() {
             marginBottom: 26,
             border: `1px solid ${C.border}`,
             borderRadius: 4,
-            backgroundImage: "url('/brand/behind-the-glass.png')",
+            backgroundImage: "url('/behind-the-glass.png')",
             backgroundSize: '200% auto',
             backgroundPosition: 'right center',
             backgroundRepeat: 'no-repeat',
