@@ -79,6 +79,28 @@ export default function App() {
       const r2 = receiveReaction(r, { hostLine: data.hostLine, dialogueSource: data.dialogueSource }, `${r.id}:${r.round}`);
       setRun(reactionDone(r2));
       setHostLine(data.hostLine);
+      // Play speech
+      if (token && data.hostLine) {
+        try {
+          const speechRes = await fetch('/api/speech', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-App-Token': token, 'Origin': window.location.origin },
+            body: JSON.stringify({ text: data.hostLine, voice: 'af_nicole' }),
+          });
+          const speechData = await speechRes.json();
+          if (speechData.audioId) {
+            const audioRes = await fetch(`/api/audio/${speechData.audioId}`, {
+              headers: { 'X-App-Token': token },
+            });
+            const blob = await audioRes.blob();
+            const url = URL.createObjectURL(blob);
+            const audio = new Audio(url);
+            audio.play();
+          }
+        } catch (e) {
+          console.error('Speech playback failed:', e);
+        }
+      }
       setTimeout(() => {
         if (!r2) return;
         const r3 = banterDone(r2);
