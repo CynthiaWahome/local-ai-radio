@@ -12,7 +12,7 @@ async function init() {
 async function synthesize(text: string, voice: string): Promise<{ data: number[]; sampleRate: number }> {
   const model = await init();
   const audio = await model.generate(text, { voice });
-  return { data: Array.from(audio.data || audio.audio), sampleRate: audio.sampleRate };
+  return { data: Array.from(audio.data || audio.audio || audio), sampleRate: 24000 };
 }
 
 function float32ToWav(data: number[], sampleRate: number): Buffer {
@@ -40,8 +40,8 @@ function float32ToWav(data: number[], sampleRate: number): Buffer {
   return buffer;
 }
 
-const readline = require('readline');
-const rl = readline.createInterface({ input: process.stdin });
+import { createInterface } from 'node:readline';
+const rl = createInterface({ input: process.stdin });
 rl.on('line', async (line: string) => {
   let req: any;
   try {

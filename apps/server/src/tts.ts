@@ -1,17 +1,20 @@
 import { spawn, ChildProcess } from 'node:child_process';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 let worker: ChildProcess | null = null;
 let ready = false;
 const pending = new Map<string, { resolve: (v: any) => void; reject: (e: any) => void }>();
 
-function startWorker() {
+async function startWorker() {
   if (worker) return;
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
   worker = spawn('npx', ['tsx', path.resolve(__dirname, 'tts-worker.ts')], {
     stdio: ['pipe', 'pipe', 'pipe'],
     env: { ...process.env },
   });
-  const rl = require('readline').createInterface({ input: worker.stdout! });
+  const { createInterface } = await import('node:readline');
+  const rl = createInterface({ input: worker.stdout! });
   rl.on('line', (line: string) => {
     try {
       const msg = JSON.parse(line);
@@ -29,8 +32,8 @@ function startWorker() {
   worker.on('exit', () => { worker = null; ready = false; });
 }
 
-export function synthesize(text: string, voice: string): Promise<{ audio: string; sampleRate: number }> {
-  startWorker();
+export async function synthesize(text: string, voice: string): Promise<{ audio: string; sampleRate: number }> {
+  await startWorker();
   return new Promise((resolve, reject) => {
     const id = `tts-${Date.now()}-${Math.random().toString(36).slice(2)}`;
     pending.set(id, { resolve, reject });
