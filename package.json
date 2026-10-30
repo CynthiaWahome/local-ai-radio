@@ -15,9 +15,8 @@
     "lint": "echo \"lint not configured yet\"",
     "test": "npm run test -w packages/engine && npm run test -w apps/server",
     "test:e2e": "playwright test",
-    "probe:model": "node planning/reference/ollama-probe.mjs",
-    "prepare:voices": "echo \"voice prep not configured yet\"",
-    "doctor": "echo \"doctor not configured yet\""
+    "probe:model": "node tools/probe-model.mjs",
+    "doctor": "node tools/doctor.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",

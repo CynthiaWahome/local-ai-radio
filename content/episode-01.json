@@ -44,12 +44,12 @@
     {
       "id": "intro-07",
       "speaker": "host",
-      "text": "In standard mode, the first answer window is two seconds. Later windows are four, six, eight, and ten. More time. Fewer excuses."
+      "text": "In standard mode, each answer window is five seconds. Five seconds. No acceptable answers."
     },
     {
       "id": "intro-08",
       "speaker": "captive",
-      "text": "Please. Just try."
+      "text": "Please. Just try. It's freezing in here."
     },
     {
       "id": "intro-09",
@@ -60,7 +60,7 @@
   "rounds": [
     {
       "index": 0,
-      "answerWindowMs": 2000,
+      "answerWindowMs": 5000,
       "theme": "A perfectly reasonable answer",
       "questions": [
         {
@@ -102,12 +102,12 @@
       "transition": {
         "id": "r1-next",
         "speaker": "host",
-        "text": "Question two. Four seconds. We have generously doubled your opportunity to disappoint us."
+        "text": "Question two. Five seconds. Mara's fingers are turning blue in the cold."
       }
     },
     {
       "index": 1,
-      "answerWindowMs": 4000,
+      "answerWindowMs": 5000,
       "theme": "The rules move after submission",
       "questions": [
         {
@@ -149,12 +149,12 @@
       "transition": {
         "id": "r2-next",
         "speaker": "host",
-        "text": "Six seconds for the next one. Almost enough time to question the institution."
+        "text": "Five seconds for question three. Mara's breathing is ragged. Something is stirring in the dark."
       }
     },
     {
       "index": 2,
-      "answerWindowMs": 6000,
+      "answerWindowMs": 5000,
       "theme": "Comfort is rejected on procedure",
       "questions": [
         {
@@ -206,12 +206,12 @@
       "transition": {
         "id": "r3-next",
         "speaker": "host",
-        "text": "Eight seconds. The panel is optimistic. I can tell."
+        "text": "Question four. Five seconds. Mara is pounding on the glass. Answer faster or listen to her choke."
       }
     },
     {
       "index": 3,
-      "answerWindowMs": 8000,
+      "answerWindowMs": 5000,
       "theme": "The captive exposes the bargain",
       "questions": [
         {
@@ -252,7 +252,7 @@
         {
           "id": "r4-b3",
           "speaker": "captive",
-          "text": "Listener. He needs you to keep answering."
+          "text": "Listener. She needs you to keep answering."
         },
         {
           "id": "r4-b4",
@@ -263,12 +263,12 @@
       "transition": {
         "id": "r4-next",
         "speaker": "host",
-        "text": "The final question. Ten whole seconds. A lifetime, depending on your side of the door."
+        "text": "The final question. Five whole seconds. A dying heartbeat before the signal terminates."
       }
     },
     {
       "index": 4,
-      "answerWindowMs": 10000,
+      "answerWindowMs": 5000,
       "theme": "The last false hope",
       "questions": [
         {
@@ -294,7 +294,7 @@
         }
       ],
       "fallbackHostLine": "The panel has reviewed your final answer and found it dangerously close to a solution. Rejected.",
-      "timeoutHostLine": "Ten seconds, and still no acceptable answer. The silence will fit beautifully in our closing credits.",
+      "timeoutHostLine": "Five seconds of silence. The static has swallowed her. That will conclude our broadcast.",
       "banter": [
         {
           "id": "r5-b1",
@@ -319,7 +319,7 @@
     {
       "id": "end-02",
       "speaker": "captive",
-      "text": "Listener. You answered. He just kept moving the door."
+      "text": "Listener. You answered. She just kept moving the door."
     },
     {
       "id": "end-03",

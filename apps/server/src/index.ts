@@ -4,8 +4,9 @@ import crypto from 'node:crypto';
 import { ReactionRequest, ReactionResponseType as ReactionResponse, RuntimeResponseType as RuntimeResponse, WarmupResponseType as WarmupResponse } from '@local-ai-radio/contracts';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { generateReaction } from './ollama';
-import { synthesize } from './tts';
+import { fileURLToPath } from 'node:url';
+import { checkModelReady, generateReaction, warmupModel } from './ollama';
+import { isVoiceReady, synthesize } from './tts';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
@@ -46,6 +47,8 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(express.json());
 
 const APP_TOKEN = process.env.APP_TOKEN || crypto.randomBytes(32).toString('hex');
+const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
+const contentDir = path.join(projectRoot, 'content');
 const ALLOWED_ORIGINS = ['http://127.0.0.1:5174', 'http://localhost:5174', 'http://127.0.0.1:4318', 'http://localhost:4318'];
 
 // Token bootstrap: print URL with fragment
@@ -54,7 +57,7 @@ const port = process.env.PORT || 4318;
 // Middleware: token check for non-health routes
 function requireToken(req: express.Request, res: express.Response, next: express.NextFunction) {
   if (!req.path.startsWith('/api/')) return next();
-  if (req.path === '/api/health') return next();
+  if (req.path === '/api/health' || req.path === '/api/episode') return next();
   const token = req.headers['x-app-token'] || req.query.token;
   if (token !== APP_TOKEN) {
     return res.status(401).json({ error: 'invalid_token' });
@@ -81,6 +84,15 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok' });
 });
 
+app.get('/api/episode', (_req, res) => {
+  try {
+    const episode = JSON.parse(readFileSync(path.join(contentDir, 'episode-01.json'), 'utf8'));
+    res.json(episode);
+  } catch {
+    res.status(500).json({ error: 'episode_not_found' });
+  }
+});
+
 /**
  * @openapi
  * /api/runtime:
@@ -92,8 +104,8 @@ app.get('/api/health', (_req, res) => {
  *       200:
  *         description: Runtime info
  */
-app.get('/api/runtime', (_req, res) => {
-  const body: RuntimeResponse = { model: 'gemma3:1b', ready: true, voiceMode: 'none' };
+app.get('/api/runtime', async (_req, res) => {
+  const body: RuntimeResponse = { model: process.env.PRESENTER_MODEL || 'gemma3:1b', ready: await checkModelReady(), voiceMode: isVoiceReady() ? 'local' : 'none' };
   res.json(body);
 });
 
@@ -108,9 +120,9 @@ app.get('/api/runtime', (_req, res) => {
  *       200:
  *         description: Warmup result
  */
-app.post('/api/warmup', (_req, res) => {
-  const body: WarmupResponse = { ready: true, model: 'gemma3:1b' };
-  res.json(body);
+app.post('/api/warmup', async (_req, res) => {
+  const body: WarmupResponse = { ready: await warmupModel(), model: process.env.PRESENTER_MODEL || 'gemma3:1b' };
+  res.status(body.ready ? 200 : 503).json(body);
 });
 
 /**
@@ -140,7 +152,7 @@ app.post('/api/reaction', async (req, res) => {
 
   let episode: any;
   try {
-    episode = JSON.parse(readFileSync(new URL('../../../content/episode-01.json', import.meta.url), 'utf8'));
+    episode = JSON.parse(readFileSync(path.join(contentDir, 'episode-01.json'), 'utf8'));
   } catch {
     return res.status(500).json({ error: 'episode_not_found' });
   }
@@ -151,19 +163,24 @@ app.post('/api/reaction', async (req, res) => {
     return res.status(400).json({ error: 'invalid_question' });
   }
 
+  const isNoAnswer = answerKind === 'timeout' || answerKind === 'silence' || !answerText?.trim();
+  const fallbackNoAnswer = round.timeoutHostLine || 'Silence. A fascinating submission. Unfortunately, the silence department closed at nine.';
+  const fallbackGeneral = round.fallbackHostLine || 'An interesting submission. Unfortunately, that is not acceptable.';
+
   const system = readFileSync(new URL('../../../prompts/presenter-system.txt', import.meta.url), 'utf8');
   const result = await generateReaction(system, {
     question: question.prompt,
     objection: question.objection,
-    answerKind,
-    answer: answerText || '',
+    answerKind: isNoAnswer ? (answerKind === 'timeout' ? 'timeout' : 'silence') : 'text',
+    answer: isNoAnswer ? '' : (answerText || '').trim(),
+    roundIndex,
+    roundNumber: roundIndex + 1,
+    timeWindowSeconds: (round.answerWindowMs ?? 5000) / 1000,
   });
 
   const hostLine = result.source === 'model' && result.hostLine
     ? result.hostLine
-    : (answerKind === 'timeout'
-        ? 'Time expired. We accept late answers, naturally. They simply arrive after the person.'
-        : `An interesting submission. Unfortunately, that is not acceptable.`);
+    : (isNoAnswer ? fallbackNoAnswer : fallbackGeneral);
 
   const body: ReactionResponse = {
     reactionId: `react-${Date.now()}`,
@@ -229,7 +246,7 @@ async function processSpeechQueue() {
     audioStore.set(job.id, wav);
     job.resolve({ audioId: job.id, status: 'ready' });
   } catch (e: any) {
-    job.resolve({ audioId: job.id, status: 'error', error: e.message });
+    job.resolve({ status: 'error', error: e.message });
   } finally {
     speechBusy = false;
     processSpeechQueue();
@@ -247,7 +264,12 @@ app.post('/api/speech', (req, res) => {
     speechQueue.push({ id, text, voice, resolve });
     processSpeechQueue();
   });
-  promise.then((result) => res.json(result));
+  promise.then((result: any) => {
+    if (result.status === 'error') {
+      return res.status(500).json(result);
+    }
+    res.json(result);
+  });
 });
 
 /**
@@ -276,8 +298,9 @@ app.get('/api/audio/:id', (req, res) => {
 
 
 // Serve built web UI in production
-const webDist = path.resolve(process.cwd(), 'apps/web/dist');
+const webDist = path.join(projectRoot, 'apps/web/dist');
 app.use(express.static(webDist));
+app.use('/content', express.static(contentDir));
 
 /**
  * @openapi

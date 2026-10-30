@@ -1,4 +1,4 @@
-export const WINDOWS = Object.freeze([2000, 4000, 6000, 8000, 10000]);
+export const WINDOWS = Object.freeze([5000, 5000, 5000, 5000, 5000]);
 export type Phase = 'SETUP' | 'INTRO' | 'QUESTION' | 'ANSWERING' | 'GENERATING' | 'REACTION' | 'BANTER' | 'ENDING' | 'COMPLETE';
 export type TimingMode = 'standard' | 'double' | 'untimed';
 export type DialogueSource = 'model' | 'fallback' | 'fixture';

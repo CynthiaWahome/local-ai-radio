@@ -8,6 +8,7 @@ export default defineConfig({
     host: true,
     proxy: {
       '/api': 'http://127.0.0.1:4318',
+      '/content': 'http://127.0.0.1:4318',
     },
   },
 });
