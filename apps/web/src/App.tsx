@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { newRun, introDone, questionPresented, submit, expire, receiveReaction, reactionDone, banterDone, endingDone, pause, resume, secondsLeft, type RunState } from '@local-ai-radio/engine';
+import { C, btn, page, card } from './styles';
 
 async function playSpeech(text: string, voice: string, token: string | null): Promise<void> {
   if (!token || !text) return;
@@ -347,44 +348,73 @@ export default function App() {
 
   if (screen === 'title') {
     return (
-      <div style={{ padding: 24, color: '#F2E8D5', background: '#0B0C0F', minHeight: '100vh', fontFamily: 'DejaVu Sans, sans-serif' }}>
-        <h1 style={{ fontFamily: 'DejaVu Sans Bold, sans-serif' }}>THE LAST BROADCAST</h1>
-        <p>An interactive radio nightmare</p>
-        <p style={{ color: '#B6B1A8', maxWidth: 480 }}>Type your answers. The broadcast responds. Headphones recommended; captions always available.</p>
-        <button onClick={() => setScreen('soundcheck')} style={{ padding: '12px 24px', background: '#8E2633', color: '#F2E8D5', border: 'none', cursor: 'pointer', marginTop: 16 }}>Tune in</button>
+      <div style={{ ...page, display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: '100vh' }}>
+        {/* Station badge */}
+        <p style={{ fontFamily: C.mono, fontSize: 11, letterSpacing: '0.25em', color: C.green, marginBottom: 24 }}>
+          ◉ CHANNEL 00 &nbsp;·&nbsp; LIVE TRANSMISSION
+        </p>
+
+        <h1 style={{ fontFamily: C.sans, fontSize: 'clamp(2.4rem, 6vw, 4rem)', lineHeight: 1.1, margin: 0, letterSpacing: '0.02em' }}>
+          THE LAST<br />BROADCAST
+        </h1>
+
+        <p style={{ color: C.amber, fontFamily: C.mono, fontSize: 13, marginTop: 12, letterSpacing: '0.1em' }}>
+          An interactive radio nightmare
+        </p>
+
+        <p style={{ color: C.muted, maxWidth: 440, marginTop: 20, lineHeight: 1.7, fontSize: 15 }}>
+          Five questions. Five seconds each. The host remembers everything you type.
+          Mara is running out of time. Headphones strongly recommended.
+        </p>
+
+        <div style={{ marginTop: 36, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          <button onClick={() => setScreen('soundcheck')} style={btn('primary')}>
+            ▶ &nbsp;Tune In
+          </button>
+        </div>
+
+        <p style={{ marginTop: 40, fontFamily: C.mono, fontSize: 11, color: C.border, letterSpacing: '0.15em' }}>
+          WAMZILIARY INC · ALL SIGNALS MONITORED
+        </p>
       </div>
     );
   }
 
   if (screen === 'soundcheck') {
     return (
-      <div style={{ padding: 24, color: '#F2E8D5', background: '#0B0C0F', minHeight: '100vh', fontFamily: 'DejaVu Sans, sans-serif', maxWidth: 800 }}>
-        <h2>Prologue & Sound Check</h2>
-        <p style={{ color: '#B6B1A8' }}>Five questions. Five seconds each. Your timer begins strictly after each question finishes.</p>
+      <div style={page}>
+        <p style={{ fontFamily: C.mono, fontSize: 11, letterSpacing: '0.2em', color: C.green, marginBottom: 20 }}>
+          ◉ CHANNEL 00 &nbsp;·&nbsp; PROLOGUE
+        </p>
+        <h2 style={{ fontSize: 22, margin: 0, letterSpacing: '0.04em' }}>Sound Check &amp; Prologue</h2>
+        <p style={{ color: C.muted, marginTop: 8, fontSize: 14, lineHeight: 1.6 }}>
+          Five questions. Five seconds each. Your timer begins strictly after each question finishes.
+        </p>
 
         {prologueLines.length > 0 && (
-          <div style={{ marginTop: 16, background: '#16191E', padding: 16, borderRadius: 4, maxHeight: 300, overflowY: 'auto' }}>
+          <div style={{ ...card, maxHeight: 280, overflowY: 'auto' }}>
             {prologueLines.map((line, idx) => (
-              <p key={idx} style={{ marginTop: 8, color: line.speaker === 'captive' ? '#B6B1A8' : '#FF665A' }}>
-                <strong>{line.speaker === 'captive' ? 'Mara' : 'Host'}:</strong> {line.text}
+              <p key={idx} style={{ margin: '10px 0 0', fontSize: 14, lineHeight: 1.6,
+                color: line.speaker === 'captive' ? C.mara : C.amber }}>
+                <span style={{ fontFamily: C.mono, fontSize: 11, opacity: 0.7 }}>
+                  {line.speaker === 'captive' ? 'MARA' : 'HOST'}&nbsp;—&nbsp;
+                </span>
+                {line.text}
               </p>
             ))}
           </div>
         )}
 
-        <div style={{ display: 'flex', gap: 12, marginTop: 20 }}>
+        <div style={{ display: 'flex', gap: 12, marginTop: 24, flexWrap: 'wrap' }}>
           <button
             onClick={playPrologue}
             disabled={prologuePlaying}
-            style={{ padding: '12px 24px', background: '#262B32', color: '#F2E8D5', border: 'none', cursor: prologuePlaying ? 'not-allowed' : 'pointer' }}
+            style={{ ...btn('secondary'), opacity: prologuePlaying ? 0.5 : 1, cursor: prologuePlaying ? 'not-allowed' : 'pointer' }}
           >
-            {prologuePlaying ? 'Broadcasting Prologue...' : 'Listen to Prologue'}
+            {prologuePlaying ? '⏳ Broadcasting Prologue…' : '▶ Listen to Prologue'}
           </button>
-          <button
-            onClick={startRun}
-            style={{ padding: '12px 24px', background: '#8E2633', color: '#F2E8D5', border: 'none', cursor: 'pointer' }}
-          >
-            Start Broadcast
+          <button onClick={startRun} style={btn('primary')}>
+            Start Broadcast →
           </button>
         </div>
       </div>
@@ -393,104 +423,209 @@ export default function App() {
 
   if (screen === 'paused') {
     return (
-      <div style={{ padding: 24, color: '#F2E8D5', background: '#0B0C0F', minHeight: '100vh', fontFamily: 'DejaVu Sans, sans-serif', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <h2>Paused</h2>
-        <p>Broadcast paused. Time preserved.</p>
-        <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
-          <button onClick={handleResume} style={{ padding: '12px 24px', background: '#8E2633', color: '#F2E8D5', border: 'none', cursor: 'pointer' }}>Resume</button>
-          <button onClick={handleLeave} style={{ padding: '12px 24px', background: '#262B32', color: '#F2E8D5', border: 'none', cursor: 'pointer' }}>Leave station</button>
+      <div style={{ ...page, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+        <p style={{ fontFamily: C.mono, fontSize: 11, letterSpacing: '0.2em', color: C.amber }}>⏸ TRANSMISSION PAUSED</p>
+        <h2 style={{ fontSize: 28, margin: '12px 0 8px' }}>Signal Held</h2>
+        <p style={{ color: C.muted, fontSize: 14 }}>Your remaining time is preserved. Mara is still waiting.</p>
+        <div style={{ display: 'flex', gap: 12, marginTop: 28 }}>
+          <button onClick={handleResume} style={btn('primary')}>▶ Resume</button>
+          <button onClick={handleLeave} style={btn('ghost')}>Leave Station</button>
         </div>
       </div>
     );
   }
 
   if (screen === 'game' && run && run.phase !== 'COMPLETE') {
+    const timedOut = timeLeft !== null && timeLeft <= 0;
+    const inputDisabled = isSubmitting || timedOut;
+
     return (
-      <div style={{ padding: 24, color: '#F2E8D5', background: '#0B0C0F', minHeight: '100vh', fontFamily: 'DejaVu Sans, sans-serif', maxWidth: 960, margin: '0 auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16, alignItems: 'center' }}>
-          <span style={{ fontFamily: 'DejaVu Sans Mono, monospace', color: '#B8D7B0' }}>Channel 00</span>
-          <span style={{ fontFamily: 'DejaVu Sans Mono, monospace', fontSize: 12, color: '#B6B1A8', letterSpacing: 2 }}>◉ ON AIR</span>
-          <button onClick={handlePause} style={{ padding: '8px 16px', background: '#262B32', color: '#F2E8D5', border: 'none', cursor: 'pointer' }}>Pause</button>
+      <div style={page}>
+        {/* Header bar */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          borderBottom: `1px solid ${C.border}`, paddingBottom: 12, marginBottom: 24 }}>
+          <span style={{ fontFamily: C.mono, fontSize: 11, color: C.green, letterSpacing: '0.2em' }}>
+            ◉ CHANNEL 00
+          </span>
+          <span style={{ fontFamily: C.mono, fontSize: 11, color: C.amber, letterSpacing: '0.15em' }}>
+            ON AIR
+          </span>
+          <button onClick={handlePause} style={{ ...btn('ghost'), padding: '6px 14px', fontSize: 12 }}>
+            ⏸ Pause
+          </button>
         </div>
 
+        {/* Round indicator */}
+        <p style={{ fontFamily: C.mono, fontSize: 12, color: C.muted, letterSpacing: '0.1em', marginBottom: 8 }}>
+          QUESTION {run.round + 1} / 5
+        </p>
+
+        {/* QUESTION phase */}
         {run.phase === 'QUESTION' && (
-          <div style={{ marginTop: 16 }}>
-            <p>Question {run.round + 1} of 5</p>
-            {questionText && <p style={{ fontSize: 20, marginTop: 8 }}>{questionText}</p>}
-            <p style={{ color: '#B6B1A8', fontStyle: 'italic', marginTop: 8 }}>
-              {isBroadcasting ? 'Broadcasting question...' : 'Preparing transmission...'}
+          <div>
+            {questionText && (
+              <p style={{ fontSize: 'clamp(1.1rem, 3vw, 1.4rem)', lineHeight: 1.5, marginBottom: 16 }}>
+                {questionText}
+              </p>
+            )}
+            <p style={{ color: C.muted, fontStyle: 'italic', fontFamily: C.mono, fontSize: 13 }}>
+              {isBroadcasting ? '⣾ Broadcasting question…' : '⣾ Preparing transmission…'}
             </p>
           </div>
         )}
 
+        {/* ANSWERING phase */}
         {run.phase === 'ANSWERING' && (
-          <form onSubmit={handleSubmit} style={{ marginTop: 16 }}>
-            <p>Question {run.round + 1} of 5</p>
-            {questionText && <p style={{ fontSize: 20, marginTop: 8 }}>{questionText}</p>}
-            <p style={{ fontSize: 32, fontFamily: 'DejaVu Sans Mono, monospace', color: '#FF665A' }}>Time: {timeLeft ?? '—'}s</p>
-            <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+          <form onSubmit={handleSubmit}>
+            {questionText && (
+              <p style={{ fontSize: 'clamp(1.1rem, 3vw, 1.4rem)', lineHeight: 1.5, marginBottom: 20 }}>
+                {questionText}
+              </p>
+            )}
+
+            {/* Timer */}
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                <span style={{
+                  fontFamily: C.mono,
+                  fontSize: 'clamp(2rem, 6vw, 3rem)',
+                  color: (timeLeft !== null && timeLeft <= 2) ? '#FF2222' : C.amber,
+                  transition: 'color 0.3s',
+                  lineHeight: 1,
+                }}>
+                  {timeLeft ?? '—'}
+                </span>
+                <span style={{ fontFamily: C.mono, fontSize: 14, color: C.muted }}>sec</span>
+              </div>
+              <div style={{ marginTop: 8, height: 3, background: C.border, borderRadius: 2, maxWidth: 440 }}>
+                <div style={{
+                  height: '100%',
+                  borderRadius: 2,
+                  background: (timeLeft !== null && timeLeft <= 2) ? '#FF2222' : C.amber,
+                  width: `${Math.max(0, ((timeLeft ?? 5) / 5) * 100)}%`,
+                  transition: 'width 0.1s linear, background 0.3s',
+                }} />
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: 8, maxWidth: 480 }}>
               <input
                 value={answer}
                 onChange={e => setAnswer(e.target.value)}
-                placeholder="Type your answer"
-                disabled={isSubmitting || (timeLeft !== null && timeLeft <= 0)}
-                style={{ padding: 8, fontSize: 16, flex: 1, maxWidth: 400 }}
+                placeholder="Type your answer…"
+                disabled={inputDisabled}
+                style={{
+                  flex: 1,
+                  padding: '10px 14px',
+                  fontSize: 15,
+                  fontFamily: C.sans,
+                  background: C.bgInput,
+                  border: `1px solid ${C.border}`,
+                  borderRadius: 2,
+                  color: C.cream,
+                  outline: 'none',
+                  opacity: inputDisabled ? 0.4 : 1,
+                }}
                 aria-label="Answer input"
                 autoFocus
               />
               <button
                 type="submit"
-                disabled={isSubmitting || (timeLeft !== null && timeLeft <= 0)}
-                style={{ padding: '8px 16px', background: '#8E2633', color: '#F2E8D5', border: 'none', cursor: 'pointer' }}
+                disabled={inputDisabled}
+                style={{ ...btn('primary'), opacity: inputDisabled ? 0.4 : 1, cursor: inputDisabled ? 'not-allowed' : 'pointer' }}
               >
-                Submit
+                Send
               </button>
             </div>
           </form>
         )}
 
-        {run.phase === 'GENERATING' && <p style={{ marginTop: 16 }}>Transmitting...</p>}
-
-        {run.phase === 'REACTION' && hostLine && (
-          <p style={{ marginTop: 16 }}><strong style={{ color: '#FF665A' }}>Host:</strong> {hostLine}</p>
+        {/* GENERATING */}
+        {run.phase === 'GENERATING' && (
+          <p style={{ color: C.muted, fontStyle: 'italic', fontFamily: C.mono, fontSize: 13, marginTop: 16 }}>
+            ⣾ Transmitting…
+          </p>
         )}
 
+        {/* REACTION */}
+        {run.phase === 'REACTION' && hostLine && (
+          <div style={card}>
+            <p style={{ fontFamily: C.mono, fontSize: 11, color: C.amber, letterSpacing: '0.15em', marginBottom: 8 }}>HOST</p>
+            <p style={{ fontSize: 16, lineHeight: 1.7, color: C.cream }}>{hostLine}</p>
+          </div>
+        )}
+
+        {/* BANTER */}
         {run.phase === 'BANTER' && (
-          <div style={{ marginTop: 16 }}>
-            {hostLine && <p style={{ marginBottom: 8 }}><strong style={{ color: '#FF665A' }}>Host:</strong> {hostLine}</p>}
+          <div style={card}>
+            {hostLine && (
+              <div style={{ marginBottom: 16, paddingBottom: 16, borderBottom: `1px solid ${C.border}` }}>
+                <p style={{ fontFamily: C.mono, fontSize: 11, color: C.amber, letterSpacing: '0.15em', marginBottom: 6 }}>HOST</p>
+                <p style={{ fontSize: 15, lineHeight: 1.7 }}>{hostLine}</p>
+              </div>
+            )}
             {banterLines.map((line, idx) => (
-              <p key={idx} style={{ marginTop: 8, color: line.speaker === 'captive' ? '#B6B1A8' : '#FF665A' }}>
-                <strong>{line.speaker === 'captive' ? 'Mara' : 'Host'}:</strong> {line.text}
-              </p>
+              <div key={idx} style={{ marginTop: idx === 0 ? 0 : 14 }}>
+                <p style={{ fontFamily: C.mono, fontSize: 11, letterSpacing: '0.15em', marginBottom: 4,
+                  color: line.speaker === 'captive' ? C.mara : C.amber }}>
+                  {line.speaker === 'captive' ? 'MARA' : 'HOST'}
+                </p>
+                <p style={{ fontSize: 15, lineHeight: 1.7, color: line.speaker === 'captive' ? C.mara : C.cream }}>
+                  {line.text}
+                </p>
+              </div>
             ))}
           </div>
         )}
 
-        {run.phase === 'ENDING' && <p style={{ marginTop: 16, color: '#FF665A' }}>Signal lost.</p>}
+        {/* ENDING */}
+        {run.phase === 'ENDING' && (
+          <p style={{ marginTop: 24, color: C.amber, fontFamily: C.mono, letterSpacing: '0.15em' }}>
+            — SIGNAL LOST —
+          </p>
+        )}
       </div>
     );
   }
 
-  // Receipt screen (shown by default upon completion or on receipt screen)
+  // Receipt screen
   const submissions = run?.turns.filter(t => t.answerKind === 'text').length || 0;
   const timeouts = run?.turns.filter(t => t.answerKind === 'timeout').length || 0;
   const silences = run?.turns.filter(t => t.answerKind === 'silence').length || 0;
 
   return (
-    <div style={{ padding: 24, color: '#F2E8D5', background: '#0B0C0F', minHeight: '100vh', fontFamily: 'DejaVu Sans, sans-serif', maxWidth: 960, margin: '0 auto' }}>
-      <h1>Transmission Receipt</h1>
-      <div style={{ fontFamily: 'DejaVu Sans Mono, monospace', marginTop: 16, lineHeight: 2 }}>
-        <p>Questions presented: 5</p>
-        <p>Answers submitted: {submissions}</p>
-        <p>Timeouts: {timeouts}</p>
-        <p>Silences: {silences}</p>
-        <p>Answers accepted: 0</p>
-        <p>Rules disclosed in advance: 0</p>
+    <div style={page}>
+      <p style={{ fontFamily: C.mono, fontSize: 11, letterSpacing: '0.2em', color: C.green, marginBottom: 20 }}>
+        ◉ CHANNEL 00 &nbsp;·&nbsp; END OF BROADCAST
+      </p>
+
+      <h1 style={{ fontSize: 'clamp(1.6rem, 5vw, 2.4rem)', margin: 0, letterSpacing: '0.04em' }}>
+        Transmission Receipt
+      </h1>
+
+      <div style={{ ...card, fontFamily: C.mono, fontSize: 14, lineHeight: 2.2, marginTop: 24 }}>
+        <p style={{ margin: 0, color: C.muted }}>Questions presented <span style={{ color: C.cream, float: 'right' }}>5</span></p>
+        <p style={{ margin: 0, color: C.muted }}>Answers submitted <span style={{ color: C.cream, float: 'right' }}>{submissions}</span></p>
+        <p style={{ margin: 0, color: C.muted }}>Timeouts <span style={{ color: C.amber, float: 'right' }}>{timeouts}</span></p>
+        <p style={{ margin: 0, color: C.muted }}>Silences <span style={{ color: C.amber, float: 'right' }}>{silences}</span></p>
+        <p style={{ margin: '8px 0 0', borderTop: `1px solid ${C.border}`, paddingTop: 8, color: C.muted }}>
+          Answers accepted <span style={{ color: C.cream, float: 'right' }}>0</span>
+        </p>
+        <p style={{ margin: 0, color: C.muted }}>Rules disclosed in advance <span style={{ color: C.cream, float: 'right' }}>0</span></p>
       </div>
-      <p style={{ marginTop: 16, color: '#B6B1A8' }}>The station was rigged. Your answers were part of the performance.</p>
-      <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
-        <button onClick={() => { setRun(null); setScreen('title'); setHostLine(''); setQuestionText(''); setBanterLines([]); }} style={{ padding: '8px 16px', background: '#8E2633', color: '#F2E8D5', border: 'none', cursor: 'pointer' }}>Tune in again</button>
-        <button onClick={handleLeave} style={{ padding: '8px 16px', background: '#262B32', color: '#F2E8D5', border: 'none', cursor: 'pointer' }}>Leave the station</button>
+
+      <p style={{ marginTop: 24, color: C.muted, fontSize: 14, lineHeight: 1.7, maxWidth: 440 }}>
+        The station was rigged. Your answers were part of the performance.
+      </p>
+
+      <div style={{ display: 'flex', gap: 12, marginTop: 28, flexWrap: 'wrap' }}>
+        <button
+          onClick={() => { setRun(null); setScreen('title'); setHostLine(''); setQuestionText(''); setBanterLines([]); }}
+          style={btn('primary')}
+        >
+          ↺ &nbsp;Tune In Again
+        </button>
+        <button onClick={handleLeave} style={btn('ghost')}>Leave The Station</button>
       </div>
     </div>
   );

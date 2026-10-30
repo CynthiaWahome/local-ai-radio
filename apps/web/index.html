@@ -2,7 +2,36 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>local-ai-radio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Last Broadcast</title>
+    <!-- Typewriter horror font — loaded from Google Fonts CDN -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet" />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      html, body, #root { height: 100%; margin: 0; padding: 0; }
+      body { background: #0B0C0F; }
+      /* Scanline overlay — pure CSS, no assets */
+      body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 2px,
+          rgba(0,0,0,0.06) 2px,
+          rgba(0,0,0,0.06) 4px
+        );
+        pointer-events: none;
+        z-index: 9999;
+      }
+      /* Scrollbar styling */
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: #0B0C0F; }
+      ::-webkit-scrollbar-thumb { background: #1F232A; border-radius: 3px; }
+    </style>
   </head>
   <body>
     <div id="root"></div>
