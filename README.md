@@ -31,20 +31,20 @@ A single-player, local-first, five-round interactive radio nightmare. The listen
 
 The experience is intentionally unwinnable. Its pleasure comes from the model reacting to the player's ingenuity, the captive challenging the host, and the listener discovering the rigged format. Think of it as a customer service nightmare where the customer is a hostage and the representative is an AI with a god complex and a thesaurus.
 
-The point: a local open-weight model (Gemma 3 1B via Ollama) performs the answer-conditioned improvisation entirely on the player's machine. No cloud inference, no paid voice API, no data leaves the device. The game can be inspected, its story and voices replaced, and its runtime kept private. Network inspection after setup shows zero external runtime requests. Your secrets are safe. The station's aren't.
+The point: a local open-weight model (Gemma 3 1B via Ollama) performs the answer-conditioned improvisation on the player's machine. Kokoro generates speech locally. Its model files may need to download on first use; cache them before playing offline. The game can be inspected and its story and voices replaced. Your secrets are safe. The station's aren't.
 
 ## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
 | Frontend | React 18 + TypeScript + Vite |
-| Styling | Local CSS variables, semantic HTML |
+| Styling | Inline styles, semantic HTML |
 | Game Engine | Pure TypeScript reducer + injected clock |
 | API | Node 24 LTS + Express + Zod 4 |
 | Presenter | Ollama (Gemma 3 1B) — local open-weight model |
-| Speech | Kokoro (planned) — local open-weight TTS |
+| Speech | Kokoro — local open-weight TTS |
 | Fixed Audio | Local WAV + procedural SFX |
-| State | In-memory per run; browser export only |
+| State | In-memory per run |
 | Tests | Vitest + Supertest + Playwright |
 | Docs | Swagger / OpenAPI 3.0 |
 
@@ -69,7 +69,7 @@ npm ci
 npm run dev
 ```
 
-Open `http://127.0.0.1:5174` in your browser.
+For the development UI, open the tokenized URL printed by the API server, replacing port `4318` with `5174`. The token is carried in the URL fragment and removed from the address bar after the page loads.
 
 ### Production
 
@@ -78,7 +78,7 @@ npm run build
 npm start
 ```
 
-Open `http://127.0.0.1:4318` (token printed in console).
+Open the tokenized `http://127.0.0.1:4318/#token=...` URL printed in your terminal.
 
 ## Scripts
 
@@ -91,8 +91,8 @@ Open `http://127.0.0.1:4318` (token printed in console).
 | `npm run lint` | Lint (not yet configured) |
 | `npm run test` | Unit + HTTP integration tests |
 | `npm run test:e2e` | Playwright E2E tests |
-| `npm run probe:model` | Ollama probe benchmark |
-| `npm run doctor` | Check local model and assets |
+| `npm run probe:model` | Run one local Ollama inference and report its duration |
+| `npm run doctor` | Check Node, episode content, audio assets and local model |
 
 ## API Documentation
 
@@ -100,10 +100,10 @@ Swagger UI available at `http://127.0.0.1:4318/api/docs/` (with app token).
 
 Endpoints:
 - `GET /api/health` — liveness check
-- `GET /api/runtime` — model/audio readiness
-- `POST /api/warmup` — load model
+- `GET /api/runtime` — check whether the configured local model is installed and whether speech is ready
+- `POST /api/warmup` — load the configured model; returns 503 if it fails
 - `POST /api/reaction` — generate host rejection
-- `POST /api/speech` — synthesize speech (placeholder)
+- `POST /api/speech` — synthesize speech with Kokoro
 - `GET /api/audio/:id` — serve audio WAV
 
 ## Project Structure

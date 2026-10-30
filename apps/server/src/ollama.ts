@@ -2,6 +2,32 @@ import * as z from 'zod';
 import { HostOutput } from '@local-ai-radio/contracts';
 
 const schema = z.toJSONSchema(HostOutput);
+const model = () => process.env.PRESENTER_MODEL || 'gemma3:1b';
+
+export async function checkModelReady(): Promise<boolean> {
+  try {
+    const response = await fetch('http://127.0.0.1:11434/api/tags', { signal: AbortSignal.timeout(2000) });
+    if (!response.ok) return false;
+    const data = await response.json() as { models?: Array<{ name?: string; model?: string }> };
+    return data.models?.some(item => item.name === model() || item.model === model()) ?? false;
+  } catch {
+    return false;
+  }
+}
+
+export async function warmupModel(): Promise<boolean> {
+  try {
+    const response = await fetch('http://127.0.0.1:11434/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: model(), prompt: '', stream: false, keep_alive: '10m' }),
+      signal: AbortSignal.timeout(30000),
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
 
 export async function generateReaction(system: string, user: object): Promise<{ hostLine: string; source: 'model' | 'fallback'; reason?: string; ms: number }> {
   const start = Date.now();
@@ -12,7 +38,7 @@ export async function generateReaction(system: string, user: object): Promise<{ 
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: process.env.PRESENTER_MODEL || 'gemma3:1b',
+        model: model(),
         messages: [
           { role: 'system', content: system },
           { role: 'user', content: JSON.stringify(user) },

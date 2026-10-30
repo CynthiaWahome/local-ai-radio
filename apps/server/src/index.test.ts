@@ -1,12 +1,17 @@
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import request from 'supertest';
 import { app, APP_TOKEN } from './index';
 import { vi } from 'vitest';
+import { checkModelReady, generateReaction, warmupModel } from './ollama';
+import { isVoiceReady } from './tts';
 vi.mock('./ollama', () => ({
   generateReaction: vi.fn().mockResolvedValue({ hostLine: 'An interesting submission. Unfortunately, that is not acceptable.', source: 'model', ms: 100 }),
+  checkModelReady: vi.fn().mockResolvedValue(true),
+  warmupModel: vi.fn().mockResolvedValue(true),
 }));
 vi.mock('./tts', () => ({
   synthesize: vi.fn().mockResolvedValue({ audio: Buffer.from('fake-wav').toString('base64'), sampleRate: 24000 }),
+  isVoiceReady: vi.fn().mockReturnValue(true),
 }));
 
 const TOKEN = APP_TOKEN;
@@ -29,12 +34,34 @@ describe('HTTP integration', () => {
     expect(res.status).toBe(200);
     expect(res.body.model).toBe('gemma3:1b');
     expect(res.body.ready).toBe(true);
+    expect(res.body.voiceMode).toBe('local');
+  });
+
+  it('GET /api/runtime reports an unavailable model and voice honestly', async () => {
+    vi.mocked(checkModelReady).mockResolvedValueOnce(false);
+    vi.mocked(isVoiceReady).mockReturnValueOnce(false);
+    const res = await request(app).get('/api/runtime').set('X-App-Token', TOKEN).set('Origin', ORIGIN);
+    expect(res.status).toBe(200);
+    expect(res.body).toMatchObject({ ready: false, voiceMode: 'none' });
   });
 
   it('POST /api/warmup with token returns ready', async () => {
     const res = await request(app).post('/api/warmup').set('X-App-Token', TOKEN).set('Origin', ORIGIN);
     expect(res.status).toBe(200);
     expect(res.body.ready).toBe(true);
+  });
+
+  it('POST /api/warmup reports failure when the model cannot load', async () => {
+    vi.mocked(warmupModel).mockResolvedValueOnce(false);
+    const res = await request(app).post('/api/warmup').set('X-App-Token', TOKEN).set('Origin', ORIGIN);
+    expect(res.status).toBe(503);
+    expect(res.body.ready).toBe(false);
+  });
+
+  it('serves the committed episode from the module-relative content directory', async () => {
+    const res = await request(app).get('/content/episode-01.json');
+    expect(res.status).toBe(200);
+    expect(res.body.rounds).toHaveLength(5);
   });
 
   it('POST /api/reaction with invalid body returns 400', async () => {
@@ -56,6 +83,7 @@ describe('HTTP integration', () => {
     expect(res.body.turnId).toBe('r1:0');
     expect(typeof res.body.hostLine).toBe('string');
     expect(res.body.dialogueSource).toBeDefined();
+    expect(vi.mocked(generateReaction).mock.lastCall?.[1]).toMatchObject({ timeWindowSeconds: 5 });
   });
 
   it('POST /api/reaction with invalid question returns 400', async () => {

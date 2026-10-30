@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 let worker: ChildProcess | null = null;
 let ready = false;
+export const isVoiceReady = () => ready;
 const pending = new Map<string, { resolve: (v: any) => void; reject: (e: any) => void }>();
 
 async function startWorker() {
