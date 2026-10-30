@@ -237,6 +237,7 @@ async function processSpeechQueue() {
 }
 
 app.post('/api/speech', (req, res) => {
+  console.log('speech request received:', req.body?.text?.slice(0,30));
   const { text, voice } = req.body || {};
   if (!text || !voice) {
     return res.status(400).json({ error: 'missing_text_or_voice' });
