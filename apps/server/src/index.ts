@@ -5,6 +5,7 @@ import { ReactionRequest, ReactionResponseType as ReactionResponse, RuntimeRespo
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { generateReaction } from './ollama';
+import { synthesize } from './tts';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
@@ -18,7 +19,7 @@ function log(msg: string) {
   console.log(line);
 }
 
-app.use(helmet());
+app.use(helmet({ contentSecurityPolicy: false }));
 
 const swaggerOptions = {
   definition: {
@@ -54,7 +55,7 @@ const port = process.env.PORT || 4318;
 function requireToken(req: express.Request, res: express.Response, next: express.NextFunction) {
   if (!req.path.startsWith('/api/')) return next();
   if (req.path === '/api/health') return next();
-  const token = req.headers['x-app-token'];
+  const token = req.headers['x-app-token'] || req.query.token;
   if (token !== APP_TOKEN) {
     return res.status(401).json({ error: 'invalid_token' });
   }
@@ -215,10 +216,38 @@ function makeSilentWav(): Buffer {
  *       200:
  *         description: Audio ID
  */
+const speechQueue: Array<{ id: string; text: string; voice: string; resolve: (v: any) => void }> = [];
+let speechBusy = false;
+
+async function processSpeechQueue() {
+  if (speechBusy || speechQueue.length === 0) return;
+  speechBusy = true;
+  const job = speechQueue.shift()!;
+  try {
+    const result = await synthesize(job.text, job.voice);
+    const wav = Buffer.from(result.audio, 'base64');
+    audioStore.set(job.id, wav);
+    job.resolve({ audioId: job.id, status: 'ready' });
+  } catch (e: any) {
+    job.resolve({ audioId: job.id, status: 'error', error: e.message });
+  } finally {
+    speechBusy = false;
+    processSpeechQueue();
+  }
+}
+
 app.post('/api/speech', (req, res) => {
+  console.log('speech request received:', req.body?.text?.slice(0,30));
+  const { text, voice } = req.body || {};
+  if (!text || !voice) {
+    return res.status(400).json({ error: 'missing_text_or_voice' });
+  }
   const id = `audio-${Date.now()}`;
-  audioStore.set(id, makeSilentWav());
-  res.json({ audioId: id, status: 'ready' });
+  const promise = new Promise((resolve) => {
+    speechQueue.push({ id, text, voice, resolve });
+    processSpeechQueue();
+  });
+  promise.then((result) => res.json(result));
 });
 
 /**

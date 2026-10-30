@@ -1,6 +1,32 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { newRun, introDone, questionPresented, submit, receiveReaction, reactionDone, banterDone, endingDone, pause, resume, secondsLeft, type RunState } from '@local-ai-radio/engine';
 
+
+let audioQueue: string[] = [];
+let audioPlaying = false;
+function playNext() {
+  if (audioPlaying || audioQueue.length === 0) return;
+  audioPlaying = true;
+  const url = audioQueue.shift()!;
+  const a = new Audio(url);
+  a.onended = () => { audioPlaying = false; playNext(); };
+  a.onerror = () => { audioPlaying = false; playNext(); };
+  a.play().catch(() => { audioPlaying = false; playNext(); });
+}
+function speak(text: string, voice: string, token: string | null) {
+  if (!token) return;
+  fetch('/api/speech', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-App-Token': token, 'Origin': window.location.origin },
+    body: JSON.stringify({ text, voice }),
+  }).then(r => r.json()).then(d => {
+    if (d.audioId) {
+      audioQueue.push(`/api/audio/${d.audioId}?token=${token}`);
+      playNext();
+    }
+  }).catch(() => {});
+}
+
 const qids = ['r1-colour', 'r2-math', 'r3-reassure', 'r4-direction', 'r5-appeal'];
 
 type Screen = 'title' | 'soundcheck' | 'game' | 'receipt' | 'paused';
@@ -79,8 +105,39 @@ export default function App() {
       const r2 = receiveReaction(r, { hostLine: data.hostLine, dialogueSource: data.dialogueSource }, `${r.id}:${r.round}`);
       setRun(reactionDone(r2));
       setHostLine(data.hostLine);
+      // Play speech
+      if (data.hostLine) {
+        const t = token || '';
+        try {
+          const speechRes = await fetch('/api/speech', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-App-Token': t, 'Origin': window.location.origin },
+            body: JSON.stringify({ text: data.hostLine, voice: 'af_nicole' }),
+          });
+          const speechData = await speechRes.json();
+          if (speechData.audioId) {
+            const audio = new Audio(`/api/audio/${speechData.audioId}?token=${t}`);
+            audio.play().catch(e => console.error('play failed:', e));
+          }
+        } catch (e) {
+          console.error('Speech failed:', e);
+        }
+      }
       setTimeout(() => {
         if (!r2) return;
+        // Speak Mara's banter
+        if (token) {
+          fetch('/api/speech', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-App-Token': token, 'Origin': window.location.origin },
+            body: JSON.stringify({ text: "Mara: You never mentioned that rule.", voice: 'am_fenrir' }),
+          }).then(r => r.json()).then(d => {
+            if (d.audioId) {
+              const a = new Audio(`/api/audio/${d.audioId}?token=${token}`);
+              a.play().catch(() => {});
+            }
+          }).catch(() => {});
+        }
         const r3 = banterDone(r2);
         setRun(r3);
         if (r3.phase === 'QUESTION') presentQuestion();
