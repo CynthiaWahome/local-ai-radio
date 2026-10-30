@@ -38,6 +38,7 @@ export default function App() {
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [hostLine, setHostLine] = useState<string>('');
+  const [questionText, setQuestionText] = useState<string>('');
   const [pausedAt, setPausedAt] = useState<number | null>(null);
 
   useEffect(() => {
@@ -219,6 +220,7 @@ export default function App() {
         {run.phase === 'ANSWERING' && (
           <form onSubmit={handleSubmit} style={{ marginTop: 16 }}>
             <p>Question {run.round + 1} of 5</p>
+            {questionText && <p style={{ fontSize: 20, marginTop: 8 }}>{questionText}</p>}
             <p style={{ fontSize: 32, fontFamily: 'DejaVu Sans Mono, monospace', color: '#FF665A' }}>Time: {timeLeft ?? '—'}s</p>
             <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
               <input value={answer} onChange={e => setAnswer(e.target.value)} placeholder="Type your answer" style={{ padding: 8, fontSize: 16, flex: 1, maxWidth: 400 }} aria-label="Answer input" />

@@ -278,6 +278,7 @@ app.get('/api/audio/:id', (req, res) => {
 // Serve built web UI in production
 const webDist = path.resolve(process.cwd(), 'apps/web/dist');
 app.use(express.static(webDist));
+app.use('/content', express.static(path.resolve(process.cwd(), 'content')));
 
 app.get('/api/debug/logs', (_req, res) => {
   res.json({ logs: serverLogs });
