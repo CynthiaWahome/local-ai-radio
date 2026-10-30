@@ -20,9 +20,9 @@ test('the prologue keeps Start Broadcast disabled until it finishes', async ({ p
 test('Start Broadcast presents question one and starts its timer', async ({ page }) => {
   await openSoundCheck(page);
   await page.getByRole('button', { name: 'Start Broadcast' }).click();
-  await expect(page.getByText('Question 1 of 5')).toBeVisible();
+  await expect(page.getByText('QUESTION 1 / 5')).toBeVisible();
   await expect(page.getByRole('textbox', { name: 'Answer input' })).toBeVisible();
-  await expect(page.getByText(/Time: [1-5]s/)).toBeVisible();
+  await expect(page.locator('form').getByText('sec')).toBeVisible();
 });
 
 test('pause preserves the answer window and leave cancels pending work', async ({ page }) => {
@@ -31,12 +31,12 @@ test('pause preserves the answer window and leave cancels pending work', async (
   await page.getByRole('button', { name: 'Start Broadcast' }).click();
   await expect(page.getByRole('textbox', { name: 'Answer input' })).toBeVisible();
   await page.getByRole('button', { name: 'Pause' }).click();
-  await expect(page.getByRole('heading', { name: 'Paused' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Signal Held' })).toBeVisible();
   await page.waitForTimeout(5500);
   await page.getByRole('button', { name: 'Resume' }).click();
   await expect(page.getByRole('textbox', { name: 'Answer input' })).toBeVisible();
   await page.getByRole('textbox', { name: 'Answer input' }).fill('Blue');
-  await page.getByRole('button', { name: 'Submit' }).click();
+  await page.getByRole('button', { name: 'Send' }).click();
   await page.getByRole('button', { name: 'Pause' }).click();
   await page.getByRole('button', { name: 'Leave station' }).click();
   await expect(page.getByRole('heading', { name: 'THE LAST BROADCAST' })).toBeVisible();
@@ -81,14 +81,14 @@ test('five answers lead through the performed ending to receipt and post-credits
   await openSoundCheck(page);
   await page.getByRole('button', { name: 'Start Broadcast' }).click();
   for (let round = 1; round <= 5; round++) {
-    await expect(page.getByText(`Question ${round} of 5`)).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText(`QUESTION ${round} / 5`)).toBeVisible({ timeout: 15000 });
     const answer = page.getByRole('textbox', { name: 'Answer input' });
     await expect(answer).toBeVisible({ timeout: 15000 });
     await answer.fill(`Answer ${round}`);
-    await page.getByRole('button', { name: 'Submit' }).click();
+    await page.getByRole('button', { name: 'Send' }).click();
   }
   await expect(page.getByText('That is our time. Please remain on the line while the line ceases to exist.')).toBeVisible({ timeout: 15000 });
   await expect(page.getByRole('heading', { name: 'Transmission Receipt' })).toBeVisible({ timeout: 30000 });
   await expect(page.getByText(/Your feedback is important to us/)).toBeVisible({ timeout: 10000 });
-  await expect(page.getByText('Answers submitted: 5')).toBeVisible();
+  await expect(page.locator('p').filter({ hasText: 'Answers submitted' }).getByText('5')).toBeVisible();
 });

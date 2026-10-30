@@ -35,6 +35,13 @@ The game can be inspected, its story and voices replaced, and its runtime kept p
 
 ## Setup
 
+### Clone
+
+```bash
+git clone --branch dev --single-branch https://github.com/CynthiaWahome/local-ai-radio.git
+cd local-ai-radio
+```
+
 ### Prerequisites
 
 - Node 24 LTS
@@ -85,4 +92,4 @@ Open the tokenized `http://127.0.0.1:4318/#token=...` URL printed in your termin
 
 MIT — do what you like, just keep the notice. See [LICENSE](LICENSE).
 
-Built by wamzii.
+Built by [wamzii](https://wamzii.com).

@@ -2,7 +2,34 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>local-ai-radio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Last Broadcast</title>
+    <style>
+      @font-face { font-family: 'Special Elite'; src: url('/SpecialElite-Regular.ttf') format('truetype'); font-display: swap; }
+      *, *::before, *::after { box-sizing: border-box; }
+      html, body, #root { height: 100%; margin: 0; padding: 0; }
+      body { background: #0B0C0F; }
+      :focus-visible { outline: 2px solid #FF665A; outline-offset: 3px; }
+      /* Scanline overlay — pure CSS, no assets */
+      body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 2px,
+          rgba(0,0,0,0.06) 2px,
+          rgba(0,0,0,0.06) 4px
+        );
+        pointer-events: none;
+        z-index: 9999;
+      }
+      /* Scrollbar styling */
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: #0B0C0F; }
+      ::-webkit-scrollbar-thumb { background: #1F232A; border-radius: 3px; }
+    </style>
   </head>
   <body>
     <div id="root"></div>
