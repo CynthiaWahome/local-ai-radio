@@ -5,6 +5,7 @@ import { ReactionRequest, ReactionResponseType as ReactionResponse, RuntimeRespo
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { generateReaction } from './ollama';
+import { synthesize } from './tts';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
@@ -215,10 +216,37 @@ function makeSilentWav(): Buffer {
  *       200:
  *         description: Audio ID
  */
+const speechQueue: Array<{ id: string; text: string; voice: string; resolve: (v: any) => void }> = [];
+let speechBusy = false;
+
+async function processSpeechQueue() {
+  if (speechBusy || speechQueue.length === 0) return;
+  speechBusy = true;
+  const job = speechQueue.shift()!;
+  try {
+    const result = await synthesize(job.text, job.voice);
+    const wav = Buffer.from(result.audio, 'base64');
+    audioStore.set(job.id, wav);
+    job.resolve({ audioId: job.id, status: 'ready' });
+  } catch (e: any) {
+    job.resolve({ audioId: job.id, status: 'error', error: e.message });
+  } finally {
+    speechBusy = false;
+    processSpeechQueue();
+  }
+}
+
 app.post('/api/speech', (req, res) => {
+  const { text, voice } = req.body || {};
+  if (!text || !voice) {
+    return res.status(400).json({ error: 'missing_text_or_voice' });
+  }
   const id = `audio-${Date.now()}`;
-  audioStore.set(id, makeSilentWav());
-  res.json({ audioId: id, status: 'ready' });
+  const promise = new Promise((resolve) => {
+    speechQueue.push({ id, text, voice, resolve });
+    processSpeechQueue();
+  });
+  promise.then((result) => res.json(result));
 });
 
 /**

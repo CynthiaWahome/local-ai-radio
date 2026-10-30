@@ -5,6 +5,9 @@ import { vi } from 'vitest';
 vi.mock('./ollama', () => ({
   generateReaction: vi.fn().mockResolvedValue({ hostLine: 'An interesting submission. Unfortunately, that is not acceptable.', source: 'model', ms: 100 }),
 }));
+vi.mock('./tts', () => ({
+  synthesize: vi.fn().mockResolvedValue({ audio: Buffer.from('fake-wav').toString('base64'), sampleRate: 24000 }),
+}));
 
 const TOKEN = APP_TOKEN;
 const ORIGIN = 'http://127.0.0.1:4318';
@@ -69,13 +72,13 @@ describe('HTTP integration', () => {
   });
 
   it('POST /api/speech returns audioId', async () => {
-    const res = await request(app).post('/api/speech').set('X-App-Token', TOKEN).set('Origin', ORIGIN);
+    const res = await request(app).post('/api/speech').set('X-App-Token', TOKEN).set('Origin', ORIGIN).send({ text: 'Hello', voice: 'af_nicole' });
     expect(res.status).toBe(200);
     expect(res.body.audioId).toBeDefined();
   });
 
   it('GET /api/audio/:id returns wav', async () => {
-    const speech = await request(app).post('/api/speech').set('X-App-Token', TOKEN).set('Origin', ORIGIN);
+    const speech = await request(app).post('/api/speech').set('X-App-Token', TOKEN).set('Origin', ORIGIN).send({ text: 'Hello', voice: 'af_nicole' });
     const id = speech.body.audioId;
     const res = await request(app).get(`/api/audio/${id}`).set('X-App-Token', TOKEN).set('Origin', ORIGIN);
     expect(res.status).toBe(200);
