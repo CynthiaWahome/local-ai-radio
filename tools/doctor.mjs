@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = new URL('../', import.meta.url);
 const model = process.env.PRESENTER_MODEL || 'gemma3:1b';
+const taggedModel = model.includes(':') ? model : `${model}:latest`;
 let healthy = true;
 
 function report(label, ok) {
@@ -19,7 +20,7 @@ for (const name of ['station-bed.wav', 'rejection-tone.wav', 'signal-drop.wav'])
 try {
   const response = await fetch('http://127.0.0.1:11434/api/tags', { signal: AbortSignal.timeout(2000) });
   const data = response.ok ? await response.json() : { models: [] };
-  report(`local model ${model}`, data.models?.some(item => item.name === model || item.model === model) ?? false);
+  report(`local model ${model}`, data.models?.some(item => item.name === taggedModel || item.model === taggedModel) ?? false);
 } catch {
   report(`local model ${model}`, false);
 }

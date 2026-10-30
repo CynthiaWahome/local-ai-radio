@@ -3,13 +3,14 @@ import { HostOutput } from '@local-ai-radio/contracts';
 
 const schema = z.toJSONSchema(HostOutput);
 const model = () => process.env.PRESENTER_MODEL || 'gemma3:1b';
+const taggedModel = () => model().includes(':') ? model() : `${model()}:latest`;
 
 export async function checkModelReady(): Promise<boolean> {
   try {
     const response = await fetch('http://127.0.0.1:11434/api/tags', { signal: AbortSignal.timeout(2000) });
     if (!response.ok) return false;
     const data = await response.json() as { models?: Array<{ name?: string; model?: string }> };
-    return data.models?.some(item => item.name === model() || item.model === model()) ?? false;
+    return data.models?.some(item => item.name === taggedModel() || item.model === taggedModel()) ?? false;
   } catch {
     return false;
   }
