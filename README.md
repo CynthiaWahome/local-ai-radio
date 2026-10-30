@@ -29,7 +29,9 @@
 
 On Channel 00, Mara is trapped beyond the signal. The presenter asks five questions, each framed as a chance to save her. Whatever the listener answers, the presenter invents a procedural reason to reject it. Mara exposes the rules behind the broadcast.
 
-The point is local AI. Gemma 3 1B, running through Ollama on your machine, improvises the rejections; Kokoro generates the voices locally. Once the models are cached, the broadcast needs no cloud inference or voice API. The story is intentionally unwinnable. The performance is yours to run and inspect.
+The point is local AI: Gemma 3 1B, an open-weight model running through Ollama, performs answer-conditioned improvisation entirely on your machine. Kokoro generates speech locally. After setup, there is no cloud inference, paid voice API, or data leaving the device; network inspection shows zero external runtime requests.
+
+The game can be inspected, its story and voices replaced, and its runtime kept private. Your secrets are safe. The station's aren't.
 
 ## Setup
 
