@@ -237,7 +237,7 @@ async function processSpeechQueue() {
 }
 
 app.post('/api/speech', (req, res) => {
-  console.log('speech request received:', req.body?.text?.slice(0,30));
+  log('speech request received: ' + (req.body?.text?.slice(0,30) || ''));
   const { text, voice } = req.body || {};
   if (!text || !voice) {
     return res.status(400).json({ error: 'missing_text_or_voice' });
@@ -295,7 +295,7 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`Frontend URL: http://127.0.0.1:${port}/#token=${APP_TOKEN}\n`);
     // Warm up TTS model
     import('./tts').then(({ synthesize }) => {
-      synthesize('warm up', 'af_nicole').then(() => console.log('TTS warmed up')).catch(e => console.error('TTS warmup failed:', e.message));
+      synthesize('warm up', 'af_nicole').then(() => log('TTS warmed up')).catch(e => log('TTS warmup failed: ' + e.message));
     });
   });
 }
