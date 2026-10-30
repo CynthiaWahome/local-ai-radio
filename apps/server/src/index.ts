@@ -54,7 +54,7 @@ const port = process.env.PORT || 4318;
 // Middleware: token check for non-health routes
 function requireToken(req: express.Request, res: express.Response, next: express.NextFunction) {
   if (!req.path.startsWith('/api/')) return next();
-  if (req.path === '/api/health') return next();
+  if (req.path === '/api/health' || req.path === '/api/episode') return next();
   const token = req.headers['x-app-token'] || req.query.token;
   if (token !== APP_TOKEN) {
     return res.status(401).json({ error: 'invalid_token' });
@@ -79,6 +79,15 @@ app.use(requireToken);
  */
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok' });
+});
+
+app.get('/api/episode', (_req, res) => {
+  try {
+    const episode = JSON.parse(readFileSync(new URL('../../../content/episode-01.json', import.meta.url), 'utf8'));
+    res.json(episode);
+  } catch {
+    res.status(500).json({ error: 'episode_not_found' });
+  }
 });
 
 /**
@@ -151,19 +160,24 @@ app.post('/api/reaction', async (req, res) => {
     return res.status(400).json({ error: 'invalid_question' });
   }
 
+  const isNoAnswer = answerKind === 'timeout' || answerKind === 'silence' || !answerText?.trim();
+  const fallbackNoAnswer = round.timeoutHostLine || 'Silence. A fascinating submission. Unfortunately, the silence department closed at nine.';
+  const fallbackGeneral = round.fallbackHostLine || 'An interesting submission. Unfortunately, that is not acceptable.';
+
   const system = readFileSync(new URL('../../../prompts/presenter-system.txt', import.meta.url), 'utf8');
   const result = await generateReaction(system, {
     question: question.prompt,
     objection: question.objection,
-    answerKind,
-    answer: answerText || '',
+    answerKind: isNoAnswer ? (answerKind === 'timeout' ? 'timeout' : 'silence') : 'text',
+    answer: isNoAnswer ? '' : (answerText || '').trim(),
+    roundIndex,
+    roundNumber: roundIndex + 1,
+    timeWindowSeconds: [10, 8, 6, 4, 2][roundIndex] || 10,
   });
 
   const hostLine = result.source === 'model' && result.hostLine
     ? result.hostLine
-    : (answerKind === 'timeout'
-        ? 'Time expired. We accept late answers, naturally. They simply arrive after the person.'
-        : `An interesting submission. Unfortunately, that is not acceptable.`);
+    : (isNoAnswer ? fallbackNoAnswer : fallbackGeneral);
 
   const body: ReactionResponse = {
     reactionId: `react-${Date.now()}`,
@@ -229,7 +243,7 @@ async function processSpeechQueue() {
     audioStore.set(job.id, wav);
     job.resolve({ audioId: job.id, status: 'ready' });
   } catch (e: any) {
-    job.resolve({ audioId: job.id, status: 'error', error: e.message });
+    job.resolve({ status: 'error', error: e.message });
   } finally {
     speechBusy = false;
     processSpeechQueue();
@@ -247,7 +261,12 @@ app.post('/api/speech', (req, res) => {
     speechQueue.push({ id, text, voice, resolve });
     processSpeechQueue();
   });
-  promise.then((result) => res.json(result));
+  promise.then((result: any) => {
+    if (result.status === 'error') {
+      return res.status(500).json(result);
+    }
+    res.json(result);
+  });
 });
 
 /**

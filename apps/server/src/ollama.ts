@@ -30,7 +30,7 @@ export async function generateReaction(system: string, user: object): Promise<{ 
     const parsed = HostOutput.parse(JSON.parse(raw.message.content));
     const line = parsed.hostLine;
     const words = line.trim().split(/\s+/u).length;
-    if (words > 18) throw new Error('too_many_words');
+    if (words > 24) throw new Error('too_many_words');
     if (/[<>\n\r\t]/.test(line)) throw new Error('markup_or_control');
     if (/\*\*/.test(line)) throw new Error('markup');
     return { hostLine: line, source: 'model', ms: Date.now() - start };

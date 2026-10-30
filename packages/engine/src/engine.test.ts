@@ -19,7 +19,7 @@ describe('engine', () => {
     let s = introDone(newRun('run1', qids));
     s = questionPresented(s, 1000);
     expect(s.phase).toBe('ANSWERING');
-    expect(s.deadline).toBe(1000 + 2000);
+    expect(s.deadline).toBe(1000 + 5000);
   });
 
   it('submit before deadline locks answer', () => {
@@ -35,14 +35,14 @@ describe('engine', () => {
   it('submit at deadline times out', () => {
     let s = introDone(newRun('run1', qids));
     s = questionPresented(s, 1000);
-    s = submit(s, 'Blue', 3000);
+    s = submit(s, 'Blue', 6000);
     expect(s.turns[0].answerKind).toBe('timeout');
   });
 
   it('expire triggers timeout', () => {
     let s = introDone(newRun('run1', qids));
     s = questionPresented(s, 1000);
-    s = expire(s, 3000);
+    s = expire(s, 6000);
     expect(s.phase).toBe('GENERATING');
     expect(s.turns[0].answerKind).toBe('timeout');
   });
@@ -52,10 +52,10 @@ describe('engine', () => {
     s = questionPresented(s, 1000);
     s = pause(s, 2000);
     expect(s.paused).toBe(true);
-    expect(s.remaining).toBe(1000);
+    expect(s.remaining).toBe(4000);
     s = resume(s, 5000);
     expect(s.paused).toBe(false);
-    expect(s.deadline).toBe(6000);
+    expect(s.deadline).toBe(9000);
   });
 
   it('double submit is no-op', () => {
@@ -96,14 +96,14 @@ describe('engine', () => {
   it('secondsLeft computes correctly', () => {
     let s = introDone(newRun('run1', qids));
     s = questionPresented(s, 1000);
-    expect(secondsLeft(s, 1000)).toBe(2);
-    expect(secondsLeft(s, 2500)).toBe(1);
+    expect(secondsLeft(s, 1000)).toBe(5);
+    expect(secondsLeft(s, 5500)).toBe(1);
   });
 
   it('double mode doubles window', () => {
     let s = introDone(newRun('run1', qids, 'double'));
     s = questionPresented(s, 1000);
-    expect(s.deadline).toBe(1000 + 2000 * 2);
+    expect(s.deadline).toBe(1000 + 5000 * 2);
   });
 
   it('untimed mode has no deadline', () => {
