@@ -293,5 +293,9 @@ if (process.env.NODE_ENV !== 'test') {
   app.listen(port, () => {
     console.log(`\nServer running on http://127.0.0.1:${port}`);
     console.log(`Frontend URL: http://127.0.0.1:${port}/#token=${APP_TOKEN}\n`);
+    // Warm up TTS model
+    import('./tts').then(({ synthesize }) => {
+      synthesize('warm up', 'af_nicole').then(() => console.log('TTS warmed up')).catch(e => console.error('TTS warmup failed:', e.message));
+    });
   });
 }

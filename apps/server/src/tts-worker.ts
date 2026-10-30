@@ -53,4 +53,4 @@ rl.on('line', async (line: string) => {
     process.stdout.write(JSON.stringify({ id: req?.id, error: e.message }) + '\n');
   }
 });
-console.error('TTS worker ready');
+init().then(() => console.error('TTS worker ready')).catch(e => console.error('TTS init failed:', e.message));
