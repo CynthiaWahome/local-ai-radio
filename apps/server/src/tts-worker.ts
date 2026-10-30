@@ -5,6 +5,7 @@ let tts: any = null;
 async function init() {
   if (!tts) {
     tts = await KokoroTTS.from_pretrained('onnx-community/Kokoro-82M-v1.0-ONNX', { dtype: 'fp16', device: 'cpu' });
+    console.error('TTS worker ready');
   }
   return tts;
 }
@@ -53,4 +54,4 @@ rl.on('line', async (line: string) => {
     process.stdout.write(JSON.stringify({ id: req?.id, error: e.message }) + '\n');
   }
 });
-init().then(() => console.error('TTS worker ready')).catch(e => console.error('TTS init failed:', e.message));
+init().catch(e => console.error('TTS init failed:', e.message));

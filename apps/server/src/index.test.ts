@@ -118,6 +118,12 @@ describe('HTTP integration', () => {
     expect(res.status).toBe(404);
   });
 
+  it('GET /api/debug/logs returns logs', async () => {
+    const res = await request(app).get('/api/debug/logs').set('X-App-Token', TOKEN).set('Origin', ORIGIN);
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body.logs)).toBe(true);
+  });
+
   it('wrong origin returns 403', async () => {
     const res = await request(app).get('/api/runtime').set('X-App-Token', TOKEN).set('Origin', 'http://evil.com');
     expect(res.status).toBe(403);

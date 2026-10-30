@@ -421,10 +421,10 @@ export default function App() {
   const handlePause = () => {
     if (!run) return;
     const now = Date.now();
+    pausedRef.current = true;
     if (run.phase === 'ANSWERING' && run.deadline !== null && now >= run.deadline && !submittingRef.current) {
       void processTurn(run, '', true);
     }
-    pausedRef.current = true;
     speechAudioRef.current?.pause();
     effectAudioRef.current?.pause();
     ambientRef.current?.pause();

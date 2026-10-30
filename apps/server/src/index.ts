@@ -302,6 +302,15 @@ const webDist = path.join(projectRoot, 'apps/web/dist');
 app.use(express.static(webDist));
 app.use('/content', express.static(contentDir));
 
+/**
+ * @openapi
+ * /api/debug/logs:
+ *   get:
+ *     summary: Get server debug logs
+ *     responses:
+ *       200:
+ *         description: Array of recent log lines
+ */
 app.get('/api/debug/logs', (_req, res) => {
   res.json({ logs: serverLogs });
 });
