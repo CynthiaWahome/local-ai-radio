@@ -80,29 +80,38 @@ export default function App() {
       setRun(reactionDone(r2));
       setHostLine(data.hostLine);
       // Play speech
-      if (token && data.hostLine) {
+      if (data.hostLine) {
+        const t = token || '';
         try {
           const speechRes = await fetch('/api/speech', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-App-Token': token, 'Origin': window.location.origin },
+            headers: { 'Content-Type': 'application/json', 'X-App-Token': t, 'Origin': window.location.origin },
             body: JSON.stringify({ text: data.hostLine, voice: 'af_nicole' }),
           });
           const speechData = await speechRes.json();
           if (speechData.audioId) {
-            const audioRes = await fetch(`/api/audio/${speechData.audioId}`, {
-              headers: { 'X-App-Token': token },
-            });
-            const blob = await audioRes.blob();
-            const url = URL.createObjectURL(blob);
-            const audio = new Audio(url);
-            audio.play();
+            const audio = new Audio(`/api/audio/${speechData.audioId}?token=${t}`);
+            audio.play().catch(e => console.error('play failed:', e));
           }
         } catch (e) {
-          console.error('Speech playback failed:', e);
+          console.error('Speech failed:', e);
         }
       }
       setTimeout(() => {
         if (!r2) return;
+        // Speak Mara's banter
+        if (token) {
+          fetch('/api/speech', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-App-Token': token, 'Origin': window.location.origin },
+            body: JSON.stringify({ text: "Mara: You never mentioned that rule.", voice: 'am_fenrir' }),
+          }).then(r => r.json()).then(d => {
+            if (d.audioId) {
+              const a = new Audio(`/api/audio/${d.audioId}?token=${token}`);
+              a.play().catch(() => {});
+            }
+          }).catch(() => {});
+        }
         const r3 = banterDone(r2);
         setRun(r3);
         if (r3.phase === 'QUESTION') presentQuestion();

@@ -19,7 +19,7 @@ function log(msg: string) {
   console.log(line);
 }
 
-app.use(helmet());
+app.use(helmet({ contentSecurityPolicy: false }));
 
 const swaggerOptions = {
   definition: {
@@ -55,7 +55,7 @@ const port = process.env.PORT || 4318;
 function requireToken(req: express.Request, res: express.Response, next: express.NextFunction) {
   if (!req.path.startsWith('/api/')) return next();
   if (req.path === '/api/health') return next();
-  const token = req.headers['x-app-token'];
+  const token = req.headers['x-app-token'] || req.query.token;
   if (token !== APP_TOKEN) {
     return res.status(401).json({ error: 'invalid_token' });
   }
