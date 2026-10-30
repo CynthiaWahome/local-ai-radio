@@ -294,7 +294,7 @@
         }
       ],
       "fallbackHostLine": "The panel has reviewed your final answer and found it dangerously close to a solution. Rejected.",
-      "timeoutHostLine": "Two seconds of silence. The static has swallowed her. That will conclude our broadcast.",
+      "timeoutHostLine": "Five seconds of silence. The static has swallowed her. That will conclude our broadcast.",
       "banter": [
         {
           "id": "r5-b1",

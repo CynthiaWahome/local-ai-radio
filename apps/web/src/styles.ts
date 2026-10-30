@@ -10,7 +10,7 @@ export const C = {
   amber:     '#FF665A',   // host colour / on-air accent
   green:     '#B8D7B0',   // channel label green
   cream:     '#F2E8D5',   // body text
-  muted:     '#7A7670',   // de-emphasised text
+  muted:     '#B6B1A8',   // readable secondary text
   mara:      '#9BB8D4',   // Mara's dialogue colour (cool blue — captive)
   border:    '#1F232A',   // subtle divider
   mono:      `'Courier New', 'Courier', monospace`,
