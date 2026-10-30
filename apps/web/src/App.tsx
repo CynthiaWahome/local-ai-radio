@@ -1,6 +1,32 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { newRun, introDone, questionPresented, submit, receiveReaction, reactionDone, banterDone, endingDone, pause, resume, secondsLeft, type RunState } from '@local-ai-radio/engine';
 
+
+let audioQueue: string[] = [];
+let audioPlaying = false;
+function playNext() {
+  if (audioPlaying || audioQueue.length === 0) return;
+  audioPlaying = true;
+  const url = audioQueue.shift()!;
+  const a = new Audio(url);
+  a.onended = () => { audioPlaying = false; playNext(); };
+  a.onerror = () => { audioPlaying = false; playNext(); };
+  a.play().catch(() => { audioPlaying = false; playNext(); });
+}
+function speak(text: string, voice: string, token: string | null) {
+  if (!token) return;
+  fetch('/api/speech', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-App-Token': token, 'Origin': window.location.origin },
+    body: JSON.stringify({ text, voice }),
+  }).then(r => r.json()).then(d => {
+    if (d.audioId) {
+      audioQueue.push(`/api/audio/${d.audioId}?token=${token}`);
+      playNext();
+    }
+  }).catch(() => {});
+}
+
 const qids = ['r1-colour', 'r2-math', 'r3-reassure', 'r4-direction', 'r5-appeal'];
 
 type Screen = 'title' | 'soundcheck' | 'game' | 'receipt' | 'paused';
